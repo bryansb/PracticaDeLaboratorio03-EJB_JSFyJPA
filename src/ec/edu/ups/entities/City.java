@@ -42,7 +42,13 @@ public class City implements Serializable {
 	public City() {
 		super();
 	}
-
+	
+	public City(String name) {
+		super();
+		this.name = name;
+		this.deleted = false;
+	}
+	
 	public int getId() {
 	    return id;
 	}

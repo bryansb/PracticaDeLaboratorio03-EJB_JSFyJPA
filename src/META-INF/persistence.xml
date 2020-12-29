@@ -4,7 +4,8 @@
 	xmlns="http://xmlns.jcp.org/xml/ns/persistence" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
-	<persistence-unit name="Practica03">
+	<persistence-unit name="Practica03" transaction-type="JTA">
+		<jta-data-source>jdbc/__practica03</jta-data-source>
 		<class>ec.edu.ups.entities.User</class>
 		<class>ec.edu.ups.entities.Warehouse</class>
 		<class>ec.edu.ups.entities.Product</class>
@@ -12,13 +13,18 @@
 		<class>ec.edu.ups.entities.BillDetail</class>
 		<class>ec.edu.ups.entities.Category</class>
 		<class>ec.edu.ups.entities.City</class>
+		<class>ec.edu.ups.entities.ProductDetail</class>
 		<properties>
+			<property name="javax.persistence.schema-generation.database.action" value="drop-and-create" />
+			<property name="eclipselink.target-database" value="MySQL"/>
+			<!-- 
 			<property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
 			<property name="eclipselink.target-database" value="MySQL"/>			
 			<property name="javax.persistence.jdbc.url" value="jdbc:mariadb://localhost:3306/practica03" />
 			<property name="javax.persistence.jdbc.user" value="root" />
 			<property name="javax.persistence.jdbc.password" value="" />
 			<property name="javax.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver" />
+			 -->
 		</properties>
 	</persistence-unit>
 </persistence>

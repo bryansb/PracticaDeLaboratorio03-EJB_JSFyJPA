@@ -1,7 +1,9 @@
 package ec.edu.ups.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -16,111 +19,123 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name="WAREHOUSES")
+@Table(name = "WAREHOUSES")
 
 public class Warehouse implements Serializable {
 
-	
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="war_id")
+	@Column(name = "war_id")
 	private int id;
-	
-	@Column(name="war_address", length=255, nullable=false)
+
+	@Column(name = "war_address", length = 255, nullable = false)
 	private String address;
 	
+	@Column(name="war_deleted", columnDefinition="BOOLEAN DEFAULT 0")
+	private boolean deleted;
+
 	@ManyToOne
 	@JoinColumn
 	private City city;
-	
-	@ManyToOne
-	@JoinColumn
-	private Product product;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "warehouse")
+	private List<ProductDetail> productDetails;
 
 	public Warehouse() {
 		super();
 	}
 
 	public int getId() {
-	    return id;
+		return id;
 	}
 
 	public void setId(int id) {
-	    this.id = id;
+		this.id = id;
 	}
 
 	public String getAddress() {
-	    return address;
+		return address;
 	}
 
 	public void setAddress(String address) {
-	    this.address = address;
+		this.address = address;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public City getCity() {
-	    return city;
+		return city;
 	}
 
 	public void setCity(City city) {
-	    this.city = city;
+		this.city = city;
 	}
 
-	public Product getProduct() {
-	    return product;
+	public List<ProductDetail> getProductDetails() {
+		return productDetails;
 	}
 
-	public void setProduct(Product product) {
-	    this.product = product;
+	public void setProductDetails(List<ProductDetail> productDetails) {
+		this.productDetails = productDetails;
 	}
 
 	@Override
 	public int hashCode() {
-	    final int prime = 31;
-	    int result = 1;
-	    result = prime * result
-		    + ((address == null) ? 0 : address.hashCode());
-	    result = prime * result + ((city == null) ? 0 : city.hashCode());
-	    result = prime * result + id;
-	    result = prime * result
-		    + ((product == null) ? 0 : product.hashCode());
-	    return result;
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + ((city == null) ? 0 : city.hashCode());
+		result = prime * result + (deleted ? 1231 : 1237);
+		result = prime * result + id;
+		result = prime * result
+				+ ((productDetails == null) ? 0 : productDetails.hashCode());
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-	    if (this == obj)
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Warehouse other = (Warehouse) obj;
+		if (address == null) {
+			if (other.address != null)
+				return false;
+		} else if (!address.equals(other.address))
+			return false;
+		if (city == null) {
+			if (other.city != null)
+				return false;
+		} else if (!city.equals(other.city))
+			return false;
+		if (deleted != other.deleted)
+			return false;
+		if (id != other.id)
+			return false;
+		if (productDetails == null) {
+			if (other.productDetails != null)
+				return false;
+		} else if (!productDetails.equals(other.productDetails))
+			return false;
 		return true;
-	    if (obj == null)
-		return false;
-	    if (getClass() != obj.getClass())
-		return false;
-	    Warehouse other = (Warehouse) obj;
-	    if (address == null) {
-		if (other.address != null)
-		    return false;
-	    } else if (!address.equals(other.address))
-		return false;
-	    if (city == null) {
-		if (other.city != null)
-		    return false;
-	    } else if (!city.equals(other.city))
-		return false;
-	    if (id != other.id)
-		return false;
-	    if (product == null) {
-		if (other.product != null)
-		    return false;
-	    } else if (!product.equals(other.product))
-		return false;
-	    return true;
 	}
 
 	@Override
 	public String toString() {
-	    return "Warehouse [id=" + id + ", address=" + address + ", city="
-		    + city + ", product=" + product + "]";
+		return "Warehouse [id=" + id + ", address=" + address + ", deleted="
+				+ deleted + ", city=" + city + ", productDetails="
+				+ productDetails + "]";
 	}
-   
+
 }

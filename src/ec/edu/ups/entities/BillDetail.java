@@ -42,7 +42,7 @@ public class BillDetail implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn
-	private Product product;
+	private ProductDetail productDetail;
 	
 	@ManyToOne
 	@JoinColumn
@@ -53,120 +53,119 @@ public class BillDetail implements Serializable {
 	}
 
 	public int getId() {
-	    return id;
+		return id;
 	}
 
 	public void setId(int id) {
-	    this.id = id;
+		this.id = id;
 	}
 
 	public int getAmount() {
-	    return amount;
+		return amount;
 	}
 
 	public void setAmount(int amount) {
-	    this.amount = amount;
+		this.amount = amount;
 	}
 
 	public double getUnitPrice() {
-	    return unitPrice;
+		return unitPrice;
 	}
 
 	public void setUnitPrice(double unitPrice) {
-	    this.unitPrice = unitPrice;
+		this.unitPrice = unitPrice;
 	}
 
 	public double getTotal() {
-	    return total;
+		return total;
 	}
 
 	public void setTotal(double total) {
-	    this.total = total;
+		this.total = total;
 	}
 
 	public boolean isDeleted() {
-	    return deleted;
+		return deleted;
 	}
 
 	public void setDeleted(boolean deleted) {
-	    this.deleted = deleted;
+		this.deleted = deleted;
 	}
 
-	public Product getProduct() {
-	    return product;
+	public ProductDetail getProductDetail() {
+		return productDetail;
 	}
 
-	public void setProduct(Product product) {
-	    this.product = product;
+	public void setProductDetail(ProductDetail productDetail) {
+		this.productDetail = productDetail;
 	}
 
 	public BillHead getBillHead() {
-	    return billHead;
+		return billHead;
 	}
 
 	public void setBillHead(BillHead billHead) {
-	    this.billHead = billHead;
+		this.billHead = billHead;
 	}
 
 	@Override
 	public int hashCode() {
-	    final int prime = 31;
-	    int result = 1;
-	    result = prime * result + amount;
-	    result = prime * result
-		    + ((billHead == null) ? 0 : billHead.hashCode());
-	    result = prime * result + (deleted ? 1231 : 1237);
-	    result = prime * result + id;
-	    result = prime * result
-		    + ((product == null) ? 0 : product.hashCode());
-	    long temp;
-	    temp = Double.doubleToLongBits(total);
-	    result = prime * result + (int) (temp ^ (temp >>> 32));
-	    temp = Double.doubleToLongBits(unitPrice);
-	    result = prime * result + (int) (temp ^ (temp >>> 32));
-	    return result;
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + amount;
+		result = prime * result
+				+ ((billHead == null) ? 0 : billHead.hashCode());
+		result = prime * result + (deleted ? 1231 : 1237);
+		result = prime * result + id;
+		result = prime * result
+				+ ((productDetail == null) ? 0 : productDetail.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(total);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(unitPrice);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-	    if (this == obj)
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BillDetail other = (BillDetail) obj;
+		if (amount != other.amount)
+			return false;
+		if (billHead == null) {
+			if (other.billHead != null)
+				return false;
+		} else if (!billHead.equals(other.billHead))
+			return false;
+		if (deleted != other.deleted)
+			return false;
+		if (id != other.id)
+			return false;
+		if (productDetail == null) {
+			if (other.productDetail != null)
+				return false;
+		} else if (!productDetail.equals(other.productDetail))
+			return false;
+		if (Double.doubleToLongBits(total) != Double
+				.doubleToLongBits(other.total))
+			return false;
+		if (Double.doubleToLongBits(unitPrice) != Double
+				.doubleToLongBits(other.unitPrice))
+			return false;
 		return true;
-	    if (obj == null)
-		return false;
-	    if (getClass() != obj.getClass())
-		return false;
-	    BillDetail other = (BillDetail) obj;
-	    if (amount != other.amount)
-		return false;
-	    if (billHead == null) {
-		if (other.billHead != null)
-		    return false;
-	    } else if (!billHead.equals(other.billHead))
-		return false;
-	    if (deleted != other.deleted)
-		return false;
-	    if (id != other.id)
-		return false;
-	    if (product == null) {
-		if (other.product != null)
-		    return false;
-	    } else if (!product.equals(other.product))
-		return false;
-	    if (Double.doubleToLongBits(total) != Double
-		    .doubleToLongBits(other.total))
-		return false;
-	    if (Double.doubleToLongBits(unitPrice) != Double
-		    .doubleToLongBits(other.unitPrice))
-		return false;
-	    return true;
 	}
 
 	@Override
 	public String toString() {
-	    return "BillDetail [id=" + id + ", amount=" + amount
-		    + ", unitPrice=" + unitPrice + ", total=" + total
-		    + ", deleted=" + deleted + ", product=" + product
-		    + ", billHead=" + billHead + "]";
-	} 
-   
+		return "BillDetail [id=" + id + ", amount=" + amount + ", unitPrice="
+				+ unitPrice + ", total=" + total + ", deleted=" + deleted
+				+ ", productDetail=" + productDetail + ", billHead=" + billHead
+				+ "]";
+	}
 }
