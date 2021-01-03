@@ -61,6 +61,18 @@ public class BillHead implements Serializable {
 	public BillHead() {
 		super();
 	}
+	
+	public void calculateTotal() {
+		if(this.billDetails == null) {
+			return;
+		}
+		for (BillDetail billDetail : billDetails) {
+			billDetail.calculateTotal();
+			this.subtotal += billDetail.getTotal();
+		}
+		this.vat = this.subtotal * 0.12;
+		this.total = this.subtotal + this.vat;
+	}
 
 	public int getId() {
 	    return id;

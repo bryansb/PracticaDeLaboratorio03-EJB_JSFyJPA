@@ -52,6 +52,10 @@ public class BillDetail implements Serializable {
 		super();
 	}
 
+	public void calculateTotal() {
+		this.total = this.unitPrice * this.amount;
+	}
+	
 	public int getId() {
 		return id;
 	}
