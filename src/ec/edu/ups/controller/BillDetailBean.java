@@ -64,18 +64,30 @@ public class BillDetailBean implements Serializable {
 		return ejbProductDetailFacade.findAll();
 	}
 	
-	public String create() {
-		BillDetail b = new BillDetail();
-		b.setAmount(this.amount);
-		b.setUnitPrice(this.unitPrice);
-		b.setTotal(this.total);
-		b.setDeleted(false);
-		b.setProductDetail(this.productDetail);
+	public String create(BillHead billHead) {
+		if(this.amount <= this.productDetail.getStock()) {
+			BillDetail b = new BillDetail();
+			b.setAmount(this.amount);
+			b.setUnitPrice(this.unitPrice);
+			b.setTotal(this.total);
+			b.setDeleted(false);
+			b.setProductDetail(this.productDetail);
+			b.setBillHead(billHead);
+			ejbBillDetailFacade.create(b);
+			this.productDetail.setStock(this.productDetail.getStock() - this.amount);
+			this.ejbProductDetailFacade.update(this.productDetail);
+			this.inputAmount = false;
+		}
+		this.amount = 1;
+		return null;
+	}
+	
+	public String delete(BillDetail billDetail) {
+		ejbBillDetailFacade.delete(billDetail);
 		return null;
 	}
 	
 	public String loadProduct(ProductDetail pd) {
-		System.out.println("PD >>>> " + pd.toString());
 		this.unitPrice = pd.getPrice();
 		this.inputAmount = true;
 		this.productName = pd.getProduct() == null ? "Null" : "Si hay";

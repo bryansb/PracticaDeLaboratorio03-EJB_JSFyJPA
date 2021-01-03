@@ -62,9 +62,9 @@ public class BillHead implements Serializable {
 		super();
 	}
 	
-	public void calculateTotal() {
+	public boolean calculateTotal() {
 		if(this.billDetails == null) {
-			return;
+			return false;
 		}
 		for (BillDetail billDetail : billDetails) {
 			billDetail.calculateTotal();
@@ -72,6 +72,7 @@ public class BillHead implements Serializable {
 		}
 		this.vat = this.subtotal * 0.12;
 		this.total = this.subtotal + this.vat;
+		return true;
 	}
 
 	public int getId() {
