@@ -4,16 +4,16 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import ec.edu.ups.entities.ProductDetail;
+import ec.edu.ups.entities.ProductWarehouse;
 
 @Stateless
-public class ProductDetailFacade extends AbstractFacade<ProductDetail> {
+public class ProductWarehouseFacade extends AbstractFacade<ProductWarehouse> {
 
 	@PersistenceContext(unitName = "Practica03")
     private EntityManager em;
 	
-	public ProductDetailFacade() {
-		super(ProductDetail.class);
+	public ProductWarehouseFacade() {
+		super(ProductWarehouse.class);
 	}
 
 	@Override

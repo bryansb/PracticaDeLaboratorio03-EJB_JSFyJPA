@@ -11,10 +11,10 @@ import javax.inject.Named;
 
 import ec.edu.ups.ejb.BillDetailFacade;
 import ec.edu.ups.ejb.BillHeadFacade;
-import ec.edu.ups.ejb.ProductDetailFacade;
+import ec.edu.ups.ejb.ProductWarehouseFacade;
 import ec.edu.ups.entities.BillDetail;
 import ec.edu.ups.entities.BillHead;
-import ec.edu.ups.entities.ProductDetail;
+import ec.edu.ups.entities.ProductWarehouse;
 
 @FacesConfig(version = FacesConfig.Version.JSF_2_3)
 @Named
@@ -31,12 +31,12 @@ public class BillDetailBean implements Serializable {
 	
 	//TEMP
 	@EJB
-	private ProductDetailFacade ejbProductDetailFacade;
+	private ProductWarehouseFacade ejbProductDetailFacade;
 	
 	private int amount;
 	private double unitPrice;
 	private double total;
-	private ProductDetail productDetail;
+	private ProductWarehouse productDetail;
 	private BillHead billHead;
 	private String productName;
 	
@@ -49,7 +49,7 @@ public class BillDetailBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		for (int i = 0; i < 10; i++) {
-			ProductDetail pd = new ProductDetail();
+			ProductWarehouse pd = new ProductWarehouse();
 			pd.setPrice((i  + 1) * 100.0);
 			pd.setStock((i  + 1) * 10);
 			ejbProductDetailFacade.create(pd);
@@ -60,7 +60,7 @@ public class BillDetailBean implements Serializable {
 		return ejbBillDetailFacade.findAll();
 	}
 	
-	public List<ProductDetail> getProductDetailList() {
+	public List<ProductWarehouse> getProductDetailList() {
 		return ejbProductDetailFacade.findAll();
 	}
 	
@@ -87,7 +87,7 @@ public class BillDetailBean implements Serializable {
 		return null;
 	}
 	
-	public String loadProduct(ProductDetail pd) {
+	public String loadProduct(ProductWarehouse pd) {
 		this.unitPrice = pd.getPrice();
 		this.inputAmount = true;
 		this.productName = pd.getProduct() == null ? "Null" : "Si hay";
@@ -127,11 +127,11 @@ public class BillDetailBean implements Serializable {
 		this.total = total;
 	}
 
-	public ProductDetail getProductDetail() {
+	public ProductWarehouse getProductDetail() {
 		return productDetail;
 	}
 
-	public void setProductDetail(ProductDetail productDetail) {
+	public void setProductDetail(ProductWarehouse productDetail) {
 		this.productDetail = productDetail;
 	}
 

@@ -38,7 +38,7 @@ public class Product implements Serializable {
 	private boolean deleted;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
-	private List<ProductDetail> productDetails = new ArrayList<ProductDetail>();
+	private List<ProductWarehouse> productDetails = new ArrayList<ProductWarehouse>();
 
 	@ManyToOne
 	@JoinColumn
@@ -72,11 +72,11 @@ public class Product implements Serializable {
 		this.deleted = deleted;
 	}
 
-	public List<ProductDetail> getProductDetails() {
+	public List<ProductWarehouse> getProductDetails() {
 		return productDetails;
 	}
 
-	public void setProductDetails(List<ProductDetail> productDetails) {
+	public void setProductDetails(List<ProductWarehouse> productDetails) {
 		this.productDetails = productDetails;
 	}
 

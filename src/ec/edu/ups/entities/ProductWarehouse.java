@@ -12,7 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "PRODUCT_DETAILS")
-public class ProductDetail implements Serializable {
+public class ProductWarehouse implements Serializable {
 
 	
 	private static final long serialVersionUID = 1L;
@@ -42,7 +42,7 @@ public class ProductDetail implements Serializable {
 	@JoinColumn
 	private Product product;
 
-	public ProductDetail() {
+	public ProductWarehouse() {
 		super();
 	}
 
@@ -128,7 +128,7 @@ public class ProductDetail implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ProductDetail other = (ProductDetail) obj;
+		ProductWarehouse other = (ProductWarehouse) obj;
 		if (billDetails == null) {
 			if (other.billDetails != null)
 				return false;

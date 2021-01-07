@@ -41,7 +41,7 @@ public class Warehouse implements Serializable {
 	private City city;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "warehouse")
-	private List<ProductDetail> productDetails;
+	private List<ProductWarehouse> productDetails;
 
 	public Warehouse() {
 		super();
@@ -79,11 +79,11 @@ public class Warehouse implements Serializable {
 		this.city = city;
 	}
 
-	public List<ProductDetail> getProductDetails() {
+	public List<ProductWarehouse> getProductDetails() {
 		return productDetails;
 	}
 
-	public void setProductDetails(List<ProductDetail> productDetails) {
+	public void setProductDetails(List<ProductWarehouse> productDetails) {
 		this.productDetails = productDetails;
 	}
 

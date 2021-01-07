@@ -42,7 +42,7 @@ public class BillDetail implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn
-	private ProductDetail productDetail;
+	private ProductWarehouse productDetail;
 	
 	@ManyToOne
 	@JoinColumn
@@ -96,11 +96,11 @@ public class BillDetail implements Serializable {
 		this.deleted = deleted;
 	}
 
-	public ProductDetail getProductDetail() {
+	public ProductWarehouse getProductDetail() {
 		return productDetail;
 	}
 
-	public void setProductDetail(ProductDetail productDetail) {
+	public void setProductDetail(ProductWarehouse productDetail) {
 		this.productDetail = productDetail;
 	}
 
