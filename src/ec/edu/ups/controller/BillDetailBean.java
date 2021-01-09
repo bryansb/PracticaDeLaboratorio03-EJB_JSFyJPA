@@ -31,19 +31,17 @@ public class BillDetailBean implements Serializable {
 	
 	//TEMP
 	@EJB
-	private ProductWarehouseFacade ejbProductDetailFacade;
+	private ProductWarehouseFacade ejbProductWarehouseFacade;
 	
 	private int amount;
-	private double unitPrice;
-	private double total;
-	private ProductWarehouse productDetail;
+	private ProductWarehouse productWarehouse;
 	private BillHead billHead;
-	private String productName;
+	private List<ProductWarehouse> productWarehouseList;
 	
 	private boolean inputAmount;
 	
 	public BillDetailBean() {
-		
+		this.amount = 1;
 	}
 	
 	@PostConstruct
@@ -52,31 +50,27 @@ public class BillDetailBean implements Serializable {
 			ProductWarehouse pd = new ProductWarehouse();
 			pd.setPrice((i  + 1) * 100.0);
 			pd.setStock((i  + 1) * 10);
-			ejbProductDetailFacade.create(pd);
+			ejbProductWarehouseFacade.create(pd);
 		}
+		this.productWarehouseList = ejbProductWarehouseFacade.findAll();
 	}
 	
 	public List<BillDetail> getBillDetailList() {
 		return ejbBillDetailFacade.findAll();
 	}
 	
-	public List<ProductWarehouse> getProductDetailList() {
-		return ejbProductDetailFacade.findAll();
+	public List<ProductWarehouse> getProductWarehouseList() {
+		return this.productWarehouseList;
 	}
 	
 	public String create(BillHead billHead) {
-		if(this.amount <= this.productDetail.getStock()) {
-			BillDetail b = new BillDetail();
-			b.setAmount(this.amount);
-			b.setUnitPrice(this.unitPrice);
-			b.setTotal(this.total);
-			b.setDeleted(false);
-			b.setProductDetail(this.productDetail);
-			b.setBillHead(billHead);
-			ejbBillDetailFacade.create(b);
-			this.productDetail.setStock(this.productDetail.getStock() - this.amount);
-			this.ejbProductDetailFacade.update(this.productDetail);
+		if(this.amount <= this.productWarehouse.getStock()) {
+			billHead.createBillDetail(this.amount, 
+					this.productWarehouse.getPrice(), 
+					this.productWarehouse, billHead);
 			this.inputAmount = false;
+			this.productWarehouse.setStock(this.productWarehouse.getStock() 
+					- this.amount);
 		}
 		this.amount = 1;
 		return null;
@@ -87,11 +81,9 @@ public class BillDetailBean implements Serializable {
 		return null;
 	}
 	
-	public String loadProduct(ProductWarehouse pd) {
-		this.unitPrice = pd.getPrice();
+	public String loadProduct(ProductWarehouse productWarehouse) {
 		this.inputAmount = true;
-		this.productName = pd.getProduct() == null ? "Null" : "Si hay";
-		this.productDetail = pd;
+		this.productWarehouse = productWarehouse;
 		return null;
 	}
 
@@ -111,28 +103,12 @@ public class BillDetailBean implements Serializable {
 		this.amount = amount;
 	}
 
-	public double getUnitPrice() {
-		return unitPrice;
+	public ProductWarehouse getProductWarehouse() {
+		return productWarehouse;
 	}
 
-	public void setUnitPrice(double unitPrice) {
-		this.unitPrice = unitPrice;
-	}
-
-	public double getTotal() {
-		return total;
-	}
-
-	public void setTotal(double total) {
-		this.total = total;
-	}
-
-	public ProductWarehouse getProductDetail() {
-		return productDetail;
-	}
-
-	public void setProductDetail(ProductWarehouse productDetail) {
-		this.productDetail = productDetail;
+	public void setProductWarehouse(ProductWarehouse productDetail) {
+		this.productWarehouse = productDetail;
 	}
 
 	public BillHead getBillHead() {
@@ -149,13 +125,5 @@ public class BillDetailBean implements Serializable {
 
 	public void setInputAmount(boolean inputAmount) {
 		this.inputAmount = inputAmount;
-	}
-
-	public String getProductName() {
-		return productName;
-	}
-
-	public void setProductName(String productName) {
-		this.productName = productName;
 	}
 }

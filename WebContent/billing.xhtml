@@ -8,6 +8,7 @@
 </h:head>
 <h:body>
 	<h:form id="users" rendered="#{not billHeadBean.userSelected}">
+		<h3>Seleccione un Cliente</h3>
 		<h:dataTable value="#{billHeadBean.userList}" var="u">
 			<h:column>
 				<f:facet name="header">Nombre</f:facet>
@@ -27,27 +28,27 @@
 			</h:column>
 		</h:dataTable>
 	</h:form>
-	<h:form id="user" rendered="#{billHeadBean.userSelected}">
-		<h:dataTable value="#{billHeadBean.user}" var="u">
-			<h:column>
-				<f:facet name="header">Nombre</f:facet>
-				#{u.name}
-			</h:column>
-			<h:column>
-				<f:facet name="header">Apellido</f:facet>
-				#{u.lastname}
-			</h:column>
-			<h:column>
-				<f:facet name="header">Correo</f:facet>
-				#{u.email}
-			</h:column>
-		</h:dataTable>
-	</h:form>
+	
+	<h:dataTable value="#{billHeadBean.user}" var="u" rendered="#{billHeadBean.userSelected}">
+		<h:column>
+			<f:facet name="header">Nombre</f:facet>
+			#{u.name}
+		</h:column>
+		<h:column>
+			<f:facet name="header">Apellido</f:facet>
+			#{u.lastname}
+		</h:column>
+		<h:column>
+			<f:facet name="header">Correo</f:facet>
+			#{u.email}
+		</h:column>
+	</h:dataTable>
 	<h:form id="billHead" rendered="#{billHeadBean.userSelected}">
-		<h:dataTable value="#{billHeadBean.billDetailList}" var="bd">
+		<h3>Detalle</h3>
+		<h:dataTable value="#{billHeadBean.billHead.billDetails}" var="bd">
 			<h:column>
 				<f:facet name="header">Nombre</f:facet>
-				#{bd.productDetail.product.name}
+				#{bd.productWarehouse.product.name}
 			</h:column>
 			<h:column>
 				<f:facet name="header">Precio</f:facet>
@@ -63,7 +64,7 @@
 			</h:column>
 			<h:column>
 				<f:facet name="header">Eliminar</f:facet>
-				<h:commandButton value="Eliminar" action="#{billDetailBean.delete(bd)}"/>
+				<h:commandButton value="Eliminar" action="#{billHeadBean.removeBillDetail(bd)}"/>
 			</h:column>
 		</h:dataTable>
 		<p>
@@ -71,34 +72,36 @@
 			| IVA: <h:outputText value="#{billHeadBean.billHead.vat}"/>
 			| Total: <h:outputText value="#{billHeadBean.billHead.total}"/>
 			| <h:commandButton value="Confirmar Compra" action="#{billHeadBean.confirm()}" />
+			| <h:commandButton value="Cancelar" action="#{billHeadBean.resetBilling()}" />
 		</p>
 	</h:form>
 	<h:form rendered="#{billDetailBean.inputAmount}">
 		<p>
-			| Nombre: <h:outputText value="#{billDetailBean.productDetail.product.name}"/>
-			| Precio: <h:outputText value="#{billDetailBean.unitPrice}"/>
-			| Stock: <h:outputText value="#{billDetailBean.productDetail.stock}"/>
+			| Nombre: <h:outputText value="#{billDetailBean.productWarehouse.product.name}"/>
+			| Precio: <h:outputText value="#{billDetailBean.productWarehouse.price}"/>
+			| Stock: <h:outputText value="#{billDetailBean.productWarehouse.stock}"/>
 			| Cantidad: <h:inputText value="#{billDetailBean.amount}"/>
 			| <h:commandButton value="Confimar" action="#{billDetailBean.create(billHeadBean.billHead)}" />
 		</p>
 	</h:form>
-	<h:form id="products">
-		<h:dataTable value="#{billDetailBean.productDetailList}" var="pd">
+	<h:form id="products" rendered="#{billHeadBean.userSelected}">
+		<h3>Seleccionar un Producto</h3>
+		<h:dataTable value="#{billDetailBean.productWarehouseList}" var="pw">
 			<h:column>
 				<f:facet name="header">Nombre</f:facet>
-				#{pd.product.name}
+				#{pw.product.name}
 			</h:column>
 			<h:column>
 				<f:facet name="header">Precio</f:facet>
-				#{pd.price}
+				#{pw.price}
 			</h:column>
 			<h:column>
 				<f:facet name="header">Stock</f:facet>
-				#{pd.stock}
+				#{pw.stock}
 			</h:column>
 			<h:column>
 				<f:facet name="header">Acción</f:facet>
-				<h:commandButton value="Seleccionar" action="#{billDetailBean.loadProduct(pd)}"/>
+				<h:commandButton value="Seleccionar" action="#{billDetailBean.loadProduct(pw)}"/>
 			</h:column>
 		</h:dataTable>
 	</h:form>
