@@ -31,7 +31,7 @@ public class ProductWarehouse implements Serializable {
 	@Column(name = "pro_det_deleted", columnDefinition = "BOOLEAN DEFAULT 0")
 	private boolean deleted;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "productDetail")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "productWarehouse")
 	private List<BillDetail> billDetails = new ArrayList<BillDetail>();
 	
 	@ManyToOne

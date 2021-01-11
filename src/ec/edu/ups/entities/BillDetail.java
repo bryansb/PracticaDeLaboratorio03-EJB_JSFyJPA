@@ -42,7 +42,7 @@ public class BillDetail implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn
-	private ProductWarehouse productDetail;
+	private ProductWarehouse productWarehouse;
 	
 	@ManyToOne
 	@JoinColumn
@@ -50,6 +50,15 @@ public class BillDetail implements Serializable {
 
 	public BillDetail() {
 		super();
+	}
+
+	public BillDetail(int amount, double unitPrice,
+			ProductWarehouse productWarehouse, BillHead billHead) {
+		super();
+		this.amount = amount;
+		this.unitPrice = unitPrice;
+		this.productWarehouse = productWarehouse;
+		this.billHead = billHead;
 	}
 
 	public void calculateTotal() {
@@ -96,12 +105,12 @@ public class BillDetail implements Serializable {
 		this.deleted = deleted;
 	}
 
-	public ProductWarehouse getProductDetail() {
-		return productDetail;
+	public ProductWarehouse getProductWarehouse() {
+		return productWarehouse;
 	}
 
-	public void setProductDetail(ProductWarehouse productDetail) {
-		this.productDetail = productDetail;
+	public void setProductWarehouse(ProductWarehouse productWarehouse) {
+		this.productWarehouse = productWarehouse;
 	}
 
 	public BillHead getBillHead() {
@@ -122,7 +131,7 @@ public class BillDetail implements Serializable {
 		result = prime * result + (deleted ? 1231 : 1237);
 		result = prime * result + id;
 		result = prime * result
-				+ ((productDetail == null) ? 0 : productDetail.hashCode());
+				+ ((productWarehouse == null) ? 0 : productWarehouse.hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(total);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -151,10 +160,10 @@ public class BillDetail implements Serializable {
 			return false;
 		if (id != other.id)
 			return false;
-		if (productDetail == null) {
-			if (other.productDetail != null)
+		if (productWarehouse == null) {
+			if (other.productWarehouse != null)
 				return false;
-		} else if (!productDetail.equals(other.productDetail))
+		} else if (!productWarehouse.equals(other.productWarehouse))
 			return false;
 		if (Double.doubleToLongBits(total) != Double
 				.doubleToLongBits(other.total))
@@ -169,7 +178,7 @@ public class BillDetail implements Serializable {
 	public String toString() {
 		return "BillDetail [id=" + id + ", amount=" + amount + ", unitPrice="
 				+ unitPrice + ", total=" + total + ", deleted=" + deleted
-				+ ", productDetail=" + productDetail + ", billHead=" + billHead
+				+ ", productDetail=" + productWarehouse + ", billHead=" + billHead
 				+ "]";
 	}
 }

@@ -1,8 +1,9 @@
 package ec.edu.ups.controller;
 
 import java.io.Serializable;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -11,8 +12,8 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.annotation.FacesConfig;
 import javax.inject.Named;
 
-import ec.edu.ups.ejb.BillDetailFacade;
 import ec.edu.ups.ejb.BillHeadFacade;
+import ec.edu.ups.ejb.ProductWarehouseFacade;
 import ec.edu.ups.ejb.UserFacade;
 import ec.edu.ups.entities.BillDetail;
 import ec.edu.ups.entities.BillHead;
@@ -29,16 +30,11 @@ public class BillHeadBean implements Serializable{
 	private BillHeadFacade ejbBillHeadFacade;
 	
 	@EJB
-	private BillDetailFacade ejbBillDetailFacade;
+	private ProductWarehouseFacade productWarehouseFacade;
 	
 	@EJB
 	private UserFacade ejbUserFacade;
 	
-	private double subtotal;
-	private double vat;
-	private Calendar date;
-	private char status;
-	private double total;
 	private User user;
 	private BillHead billHead;
 	
@@ -62,35 +58,28 @@ public class BillHeadBean implements Serializable{
 			u.setUsername("u " + i + " " + new Date());
 			ejbUserFacade.create(u);
 		}
+		billDetailList = new ArrayList<>();
 	}
 	
 	public String create() {
-		// Validar que no exista otro con estado de P
-		String[][] attributes = {{"status"}, {"user", "email"}};
-		String[] values = {"equal&P", "equal&" + user.getEmail()};
-		
-		List<BillHead> billHeads = ejbBillHeadFacade.findByPath( 
-				attributes, values, null, 0, 1, true);
-		if (billHeads == null || ( billHeads.size() == 0)) {
-			BillHead billHead = new BillHead();
-			billHead.setDate(Calendar.getInstance());
-			billHead.setStatus('P');
-			billHead.setUser(this.user);
-			ejbBillHeadFacade.create(billHead);
-			billHeads = ejbBillHeadFacade.findByPath( 
-					attributes, values, null, 0, 1, true);
-		}
-		this.billHead = billHeads.get(0);
+		this.billHead = new BillHead();
+		this.billHead.setUser(this.user);
 		return null;
 	}
 	
 	public String confirm() {
-		this.billHead.setDate(Calendar.getInstance());
+		if ((this.billHead.getBillDetails() == null) 
+				|| (this.billHead.getBillDetails().size() == 0)) {
+			return null;
+		}
+		this.billHead.setDate(new GregorianCalendar());
 		this.billHead.setStatus('A');
-		this.ejbBillHeadFacade.update(this.billHead);
-		this.billHead = null;
-		this.user = null;
-		this.userSelected = false;
+		this.billHead.calculateTotal();
+		this.ejbBillHeadFacade.create(this.billHead);
+		for (BillDetail billDetail: this.billHead.getBillDetails()) {
+			productWarehouseFacade.update(billDetail.getProductWarehouse());
+		}
+		resetBilling();
 		return null;
 	}
 	
@@ -100,19 +89,25 @@ public class BillHeadBean implements Serializable{
 		return null;
 	}
 	
-	public String changeUser() {
-		this.userSelected = false;
+	public String removeBillDetail(BillDetail billDetail) {
+		int actualStock = billDetail.getProductWarehouse().getStock();
+		int billDetailAmount = billDetail.getAmount(); 
+		billDetail.getProductWarehouse().setStock(actualStock + billDetailAmount);
+		this.billHead.getBillDetails().remove(billDetail);
 		return null;
 	}
 	
-	public void loadBillHeadPending() {
-		create();
-		String[][] attributes = {{"billHead", "id"}};
-		String[] values = {"equal&" + this.billHead.getId()};
-		this.billDetailList = ejbBillDetailFacade.findByPath(attributes, 
-				values, null, 0, 0, false);
-		this.billHead.setBillDetails(billDetailList);
-		this.billHead.calculateTotal();
+	public String resetBilling() {
+		billHead = null;
+		user = null;
+		userSelected = false;
+		billDetailList = null;
+		return null;
+	}
+	
+	public String changeUser() {
+		this.userSelected = false;
+		return null;
 	}
 	
 	public List<BillHead> getBillHeadList(){
@@ -122,46 +117,6 @@ public class BillHeadBean implements Serializable{
 	public List<User> getUserList() {
 		return ejbUserFacade.findAll();
 	}
-	
-	public double getSubtotal() {
-		return subtotal;
-	}
-	
-	public void setSubtotal(double subtotal) {
-		this.subtotal = subtotal;
-	}
-	
-	public double getVat() {
-		return vat;
-	}
-	
-	public void setVat(double vat) {
-		this.vat = vat;
-	}
-	
-	public Calendar getDate() {
-		return date;
-	}
-	
-	public void setDate(Calendar date) {
-		this.date = date;
-	}
-	
-	public char getStatus() {
-		return status;
-	}
-	
-	public void setStatus(char status) {
-		this.status = status;
-	}
-	
-	public double getTotal() {
-		return total;
-	}
-	
-	public void setTotal(double total) {
-		this.total = total;
-	}
 
 	public User getUser() {
 		return user;
@@ -170,6 +125,7 @@ public class BillHeadBean implements Serializable{
 	public void setUser(User user) {
 		this.user = user;
 		this.userSelected = true;
+		create();
 	}
 
 	public BillHead getBillHead() {
@@ -189,7 +145,6 @@ public class BillHeadBean implements Serializable{
 	}
 
 	public List<BillDetail> getBillDetailList() {
-		loadBillHeadPending();
 		return billDetailList;
 	}
 
