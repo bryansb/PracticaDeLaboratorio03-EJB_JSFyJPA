@@ -1,6 +1,7 @@
 package ec.edu.ups.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -57,6 +58,7 @@ public class BillHeadBean implements Serializable{
 			u.setUsername("u " + i + " " + new Date());
 			ejbUserFacade.create(u);
 		}
+		billDetailList = new ArrayList<>();
 	}
 	
 	public String create() {
@@ -96,9 +98,10 @@ public class BillHeadBean implements Serializable{
 	}
 	
 	public String resetBilling() {
-		this.billHead = null;
-		this.user = null;
-		this.userSelected = false;
+		billHead = null;
+		user = null;
+		userSelected = false;
+		billDetailList = null;
 		return null;
 	}
 	

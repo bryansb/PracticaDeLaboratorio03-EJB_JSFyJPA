@@ -73,6 +73,20 @@ public class BillDetailBean implements Serializable {
 					- this.amount);
 		}
 		this.amount = 1;
+		billHead.calculateTotal();
+		return null;
+	}
+	
+	public String validateAmount() {
+		if(this.amount <= this.productWarehouse.getStock()) {
+			
+		}
+		return null;
+	}
+	
+	public String cancelBilling() {
+		productWarehouseList = ejbProductWarehouseFacade.findAll();
+		inputAmount = false;
 		return null;
 	}
 	
@@ -82,11 +96,19 @@ public class BillDetailBean implements Serializable {
 	}
 	
 	public String loadProduct(ProductWarehouse productWarehouse) {
+		this.amount = 1;
 		this.inputAmount = true;
 		this.productWarehouse = productWarehouse;
 		return null;
 	}
 
+	public String cancelProduct() {
+		this.amount = 1;
+		this.inputAmount = false;
+		this.productWarehouse = null;
+		return null;
+	}
+	
 	public BillHeadFacade getEjbBillHeadFacade() {
 		return ejbBillHeadFacade;
 	}
