@@ -4,5 +4,35 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd"
     version="2.3">
-
+    
+    <!-- 
+		PATH: /
+		XHTML FILE: index.xhtml
+	 -->
+	<navigation-rule>
+		<display-name>home</display-name>
+		<from-view-id>/index.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>billing</from-outcome>
+			<to-view-id>/billing.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- 
+		PATH: /XHTML/private/admin/
+		XHTML FILE: billing.xhtml
+	 -->
+	<navigation-rule>
+		<display-name>billing</display-name>
+		<from-view-id>/billing.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/index.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
 </faces-config>

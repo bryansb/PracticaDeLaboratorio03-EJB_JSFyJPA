@@ -7,8 +7,9 @@
 
 	<h:form>
 		<p:menu toggleable="true" style="width:100%">
+			<p:menuitem value="Inicio" action="home" ajax="true"/>
        		<p:submenu label="Facturación">
-         		<p:menuitem value="Nueva" url="/Practica03/billing.jsf" ajax="true"/>
+         		<p:menuitem value="Nueva" action="billing" ajax="true"/>
            		<p:menuitem value="Gestión" url="/Practica03/billing.jsf"/>
       		</p:submenu>
        		<p:submenu label="Clientes">
