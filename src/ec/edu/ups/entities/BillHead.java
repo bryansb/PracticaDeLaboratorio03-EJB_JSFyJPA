@@ -3,6 +3,7 @@ package ec.edu.ups.entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -60,6 +61,16 @@ public class BillHead implements Serializable {
 
 	public BillHead() {
 		super();
+		this.date = new GregorianCalendar();
+	}
+	
+	public void createBillDetail(int amount, double unitPrice,
+			ProductWarehouse productWarehouse, BillHead billHead) {
+		if (this.billDetails == null) {
+			this.billDetails = new ArrayList<>();
+		}
+		BillDetail billDetail = new BillDetail(amount, unitPrice, productWarehouse, billHead);
+		this.billDetails.add(billDetail);
 	}
 	
 	public boolean calculateTotal() {
