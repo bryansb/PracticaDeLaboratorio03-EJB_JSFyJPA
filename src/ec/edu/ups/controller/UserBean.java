@@ -22,14 +22,11 @@ public class UserBean implements Serializable{
 	@EJB
 	private UserFacade ejbUserFacade;
 	
-	private int id;
 	private String email;
-	private String username;
-	private String password;
+	private String dni;
 	private String name;
 	private String lastname;
-	private char role;
-	private boolean deleted;
+	private List<User> userList;
 	
 	public UserBean() {
 		super();
@@ -37,51 +34,52 @@ public class UserBean implements Serializable{
 	
 	@PostConstruct
 	public void init() {
+		userList = ejbUserFacade.findAll();
+	}
+	
+	public void userRandom() {
+		for (int i = 0; i < 50; i++) {
+			ejbUserFacade.create(new User( "correo"+i+"@mail.com", "001000"+i, "", "nombre"+i, "apellido"+i, 'C', false));
+		}
+		userList = ejbUserFacade.findAll();
 	}
 	
 	public String create() {
 		try {
 			User user = new User();
 			user.setEmail(email);
-			user.setUsername(username);
-			user.setPassword(password);
+			user.setDni(dni);
+			user.setPassword("");
 			user.setName(name);
-			user.setName(lastname);
-			user.setRole(role);
-			user.setDeleted(false);
+			user.setLastname(lastname);
+			user.setRole('C');
 			ejbUserFacade.create(user);
+			userList = ejbUserFacade.findAll();
+			cleanString();
 			return "Success";
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "Error";
 		}
-	}
-	
-	public List<User> getUserList() {
-		return ejbUserFacade.findAll();
 	}
 	
 	public String update(User user) {
-		try {
-			user.setEmail(email);
-			user.setUsername(username);
-			user.setPassword(password);
-			user.setName(name);
-			user.setName(lastname);
-			user.setRole(role);
-			user.setDeleted(deleted);
-			ejbUserFacade.update(user);
-			return "Success";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "Error";
-		}
+		user.setEditable(true);
+		return "Success";
+
+	}
+	
+	public String save(User user) {
+		ejbUserFacade.update(user);
+		user.setEditable(false);
+		return "Success";
 	}
 	
 	public String delete(User user) {
 		try {
 			user.setDeleted(true);
 			ejbUserFacade.update(user);
+			userList = ejbUserFacade.findAll();
 			return "Success";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -89,20 +87,23 @@ public class UserBean implements Serializable{
 		}
 	}
 	
-	public UserFacade getEjbUserFacade() {
-		return ejbUserFacade;
+	public String restore(User user) {
+		try {
+			user.setDeleted(false);
+			ejbUserFacade.update(user);
+			userList = ejbUserFacade.findAll();
+			return "Success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "Error";
+		}
 	}
-
-	public void setEjbUserFacade(UserFacade ejbUserFacade) {
-		this.ejbUserFacade = ejbUserFacade;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
+	
+	public void cleanString() {
+		email = "";
+		dni = "";
+		name = "";
+		lastname = "";
 	}
 
 	public String getEmail() {
@@ -113,20 +114,12 @@ public class UserBean implements Serializable{
 		this.email = email;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getDni() {
+		return dni;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
+	public void setDni(String username) {
+		this.dni = username;
 	}
 
 	public String getName() {
@@ -144,21 +137,13 @@ public class UserBean implements Serializable{
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
-
-	public char getRole() {
-		return role;
+	
+	public List<User> getUserList() {
+		return userList;
 	}
 
-	public void setRole(char role) {
-		this.role = role;
-	}
-
-	public boolean isDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
+	public void setUserList(List<User> userList) {
+		this.userList = userList;
 	}
 
 }

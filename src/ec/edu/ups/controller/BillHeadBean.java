@@ -55,7 +55,6 @@ public class BillHeadBean implements Serializable{
 			u.setEmail("e " + i + " " + new Date());
 			u.setPassword("");
 			u.setRole('c');
-			u.setUsername("u " + i + " " + new Date());
 			ejbUserFacade.create(u);
 		}
 		billDetailList = new ArrayList<>();
