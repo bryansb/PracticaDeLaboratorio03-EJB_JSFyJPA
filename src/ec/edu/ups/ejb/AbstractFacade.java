@@ -69,7 +69,8 @@ public abstract class AbstractFacade<T> {
     }
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
-	public List<T> findByPath(String[][] attributes, String[] values, String order, int index, int size, boolean isDistinct) {
+	public List<T> findByPath(String[][] attributes, String[] values, String order, int index, 
+			int size, boolean isAsc, boolean isDistinct) {
     	getEntityManager().clear();
 		// Se crea un criterio de consulta
 		CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
@@ -95,7 +96,12 @@ public abstract class AbstractFacade<T> {
 		criteriaQuery.where(predicate);
 		
 		// ORDER
-		if (order != null) criteriaQuery.orderBy(criteriaBuilder.asc(root.get(order)));
+		if (order != null) { 
+			if (isAsc)
+				criteriaQuery.orderBy(criteriaBuilder.asc(root.get(order)));
+			else
+				criteriaQuery.orderBy(criteriaBuilder.desc(root.get(order)));
+		}
 		
 		criteriaQuery.distinct(isDistinct);
 		

@@ -25,8 +25,6 @@
 					</h:form>
 					<h:form id="users">
 						<p:dataTable value="#{billHeadBean.userList}" var="u" style="text-align: center;"
-						paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-		                currentPageReportTemplate="{startRecord}-{endRecord} de {totalRecords} clientes"
 						rows="5" paginator="true" rowsPerPageTemplate="5, 10, 15">
 							<p:column>
 								<f:facet name="header">Nombre</f:facet>

@@ -12,14 +12,20 @@
 	<navigation-rule>
 		<display-name>home</display-name>
 		<from-view-id>/index.xhtml</from-view-id>
+		<!-- LEFT MENU -->
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/index.xhtml</to-view-id>
+		</navigation-case>
 		<navigation-case>
 			<from-outcome>billing</from-outcome>
 			<to-view-id>/billing.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>home</from-outcome>
-			<to-view-id>/index.xhtml</to-view-id>
+			<from-outcome>bill-management</from-outcome>
+			<to-view-id>/bill_management.xhtml</to-view-id>
 		</navigation-case>
+		<!-- /LEFT MENU -->
 	</navigation-rule>
 	
 	<!-- 
@@ -29,10 +35,42 @@
 	<navigation-rule>
 		<display-name>billing</display-name>
 		<from-view-id>/billing.xhtml</from-view-id>
+		<!-- LEFT MENU -->
 		<navigation-case>
 			<from-outcome>home</from-outcome>
 			<to-view-id>/index.xhtml</to-view-id>
-			<redirect/>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>billing</from-outcome>
+			<to-view-id>/billing.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>bill-management</from-outcome>
+			<to-view-id>/bill_management.xhtml</to-view-id>
+		</navigation-case>
+		<!-- /LEFT MENU -->
+	</navigation-rule>
+	
+	<!-- 
+		PATH: /XHTML/private/admin/
+		XHTML FILE: bill_management.xhtml
+	 -->
+	 <navigation-rule>
+		<display-name>Bill Management</display-name>
+		<from-view-id>/bill_management.xhtml</from-view-id>
+		<!-- LEFT MENU -->
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/index.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>billing</from-outcome>
+			<to-view-id>/billing.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>bill-management</from-outcome>
+			<to-view-id>/bill_management.xhtml</to-view-id>
+		</navigation-case>
+		<!-- /LEFT MENU -->
 	</navigation-rule>
 </faces-config>
