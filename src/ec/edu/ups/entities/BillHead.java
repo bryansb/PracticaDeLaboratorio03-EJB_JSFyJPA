@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 /**
@@ -64,6 +65,13 @@ public class BillHead implements Serializable {
 		this.date = new GregorianCalendar();
 	}
 	
+	@PreUpdate
+	public void cancelledBill() {
+		if (status != 'C') {
+			return;
+		}
+	}
+	
 	public void createBillDetail(int amount, double unitPrice,
 			ProductWarehouse productWarehouse, BillHead billHead) {
 		if (this.billDetails == null) {
@@ -77,6 +85,9 @@ public class BillHead implements Serializable {
 		if(this.billDetails == null) {
 			return false;
 		}
+		this.subtotal = 0;
+		this.vat = 0;
+		this.total = 0;
 		for (BillDetail billDetail : billDetails) {
 			billDetail.calculateTotal();
 			this.subtotal += billDetail.getTotal();

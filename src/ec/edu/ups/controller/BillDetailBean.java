@@ -29,7 +29,6 @@ public class BillDetailBean implements Serializable {
 	@EJB
 	private BillDetailFacade ejbBillDetailFacade;
 	
-	//TEMP
 	@EJB
 	private ProductWarehouseFacade ejbProductWarehouseFacade;
 	
@@ -37,6 +36,7 @@ public class BillDetailBean implements Serializable {
 	private ProductWarehouse productWarehouse;
 	private BillHead billHead;
 	private List<ProductWarehouse> productWarehouseList;
+	private String current;
 	
 	private boolean inputAmount;
 	
@@ -109,6 +109,18 @@ public class BillDetailBean implements Serializable {
 		return null;
 	}
 	
+	public String cancelBillDetail(BillHead billHead) {
+		for (BillDetail billDetail : billHead.getBillDetails()) {
+			ProductWarehouse productWarehouse = billDetail.getProductWarehouse();
+			int amount = billDetail.getAmount();
+			int stock = billDetail.getProductWarehouse().getStock();
+			productWarehouse.setStock(stock + amount);
+			ejbProductWarehouseFacade.update(productWarehouse);
+		}
+		productWarehouseList = ejbProductWarehouseFacade.findAll();
+		return null;
+	}
+	
 	public BillHeadFacade getEjbBillHeadFacade() {
 		return ejbBillHeadFacade;
 	}
@@ -148,4 +160,20 @@ public class BillDetailBean implements Serializable {
 	public void setInputAmount(boolean inputAmount) {
 		this.inputAmount = inputAmount;
 	}
+
+	public String getCurrent() {
+		return current;
+	}
+
+	public void setCurrent(String current) {
+		this.current = current;
+	}
+	
+	public String printCurrent() {
+		ProductWarehouse p = ejbProductWarehouseFacade.read(Integer.parseInt(current));
+		System.out.println(p.getStock());
+		return null;
+	}
+	
+	
 }
