@@ -40,8 +40,8 @@
 			            </p:column>
 			        </p:selectOneMenu>
 			        
-					<p:outputLabel for="warehouse-city" value="Dirección:" />
-					<p:inputText value="#{warehouseBean.address}" />
+					<p:outputLabel for="warehouse-address" value="Dirección:" />
+					<p:inputText id="warehouse-address" value="#{warehouseBean.address}" />
 					
 					<p:commandButton value="Crear Nueva Bodega" action="#{warehouseBean.create()}"
 						update="main-content"/>
@@ -57,21 +57,29 @@
 					</p:column>
 					<p:column>
 						<f:facet name="header">Dirección</f:facet>
-						#{w.address}
+						<p:inputText value="#{w.address}" rendered="#{w.editable}" />
+						<p:outputLabel value="#{w.address}" rendered="#{not w.editable}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">Acciones</f:facet>
-						<p:commandButton value="Editar" action="#"
-						update="main-content"/>
+						<p:commandButton value="Editar" action="#{warehouseBean.edit(w)}"
+							rendered="#{not w.editable and not w.deleted}" update="warehouses"/>
 						<p:commandButton value="Gestionar Inventario" action="#"
-						update="main-content"/>
+							rendered="#{not w.editable and not w.deleted}" update="warehouses"/>
+						<p:commandButton value="Guardar" action="#{warehouseBean.save(w)}"
+							rendered="#{w.editable and not w.deleted}" update="warehouses"/>
+							
+						<p:commandButton value="Eliminar" action="#{warehouseBean.delete(w)}"
+							rendered="#{w.editable and not w.deleted}" update="warehouses"/>
+						<p:commandButton value="Restaurar" action="#{warehouseBean.restore(w)}"
+							rendered="#{not w.editable and w.deleted}" update="warehouses"/>
 					</p:column>
 				</p:dataTable>
     		</h:form>
     		
     		<!-- // LISTAR PRODUCTOS SENCILLO -->
     		<h:form>
-    		
+    			
     		</h:form>
     		
     	</h:panelGroup>
