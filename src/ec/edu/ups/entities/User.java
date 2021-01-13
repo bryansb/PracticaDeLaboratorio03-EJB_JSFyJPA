@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Entity implementation class for Entity: User
@@ -33,8 +34,8 @@ public class User implements Serializable {
 	@Column(name="use_email", length=255, nullable=false, unique=true)
 	private String email;
 	
-	@Column(name="use_username", length=255, nullable=false, unique=true)
-	private String username;
+	@Column(name="use_dni", length=10, nullable=false, unique=true)
+	private String dni;
 	
 	@Column(name="use_password", length=255, nullable=false)
 	private String password;
@@ -45,7 +46,7 @@ public class User implements Serializable {
 	@Column(name="use_lastname", length=255, nullable=false)
 	private String lastname;
 	
-	@Column(name="use_role", length=1, nullable=false, columnDefinition = "VARCHAR(1) DEFAULT 'E'")
+	@Column(name="use_role", length=1, nullable=false, columnDefinition = "VARCHAR(1) DEFAULT 'C'")
 	private char role;
 	
 	@Column(name="use_deleted", columnDefinition="BOOLEAN DEFAULT 0")
@@ -53,9 +54,23 @@ public class User implements Serializable {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private List<BillHead> billHeads = new ArrayList<BillHead>();
+	
+	@Transient
+	private boolean editable;
 
 	public User() {
 		super();
+	}
+
+	public User(String email, String dni, String password, String name, String lastname, char role, boolean deleted) {
+		super();
+		this.email = email;
+		this.dni = dni;
+		this.password = password;
+		this.name = name;
+		this.lastname = lastname;
+		this.role = role;
+		this.deleted = deleted;
 	}
 
 	public int getId() {
@@ -74,20 +89,20 @@ public class User implements Serializable {
 	    this.email = email;
 	}
 
-	public String getUsername() {
-	    return username;
+	public String getDni() {
+		return dni;
 	}
 
-	public void setUsername(String username) {
-	    this.username = username;
+	public void setDni(String dni) {
+		this.dni = dni;
 	}
 
 	public String getPassword() {
-	    return password;
+		return password;
 	}
 
 	public void setPassword(String password) {
-	    this.password = password;
+		this.password = password;
 	}
 
 	public String getName() {
@@ -130,6 +145,14 @@ public class User implements Serializable {
 	    this.billHeads = billHeads;
 	}
 
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
+	}
+
 	@Override
 	public int hashCode() {
 	    final int prime = 31;
@@ -142,11 +165,8 @@ public class User implements Serializable {
 	    result = prime * result
 		    + ((lastname == null) ? 0 : lastname.hashCode());
 	    result = prime * result + ((name == null) ? 0 : name.hashCode());
-	    result = prime * result
-		    + ((password == null) ? 0 : password.hashCode());
 	    result = prime * result + role;
-	    result = prime * result
-		    + ((username == null) ? 0 : username.hashCode());
+	    result = prime * result + ((dni == null) ? 0 : dni.hashCode());
 	    return result;
 	}
 
@@ -183,17 +203,12 @@ public class User implements Serializable {
 		    return false;
 	    } else if (!name.equals(other.name))
 		return false;
-	    if (password == null) {
-		if (other.password != null)
-		    return false;
-	    } else if (!password.equals(other.password))
-		return false;
 	    if (role != other.role)
 		return false;
-	    if (username == null) {
-		if (other.username != null)
+	    if (dni == null) {
+		if (other.dni != null)
 		    return false;
-	    } else if (!username.equals(other.username))
+	    } else if (!dni.equals(other.dni))
 		return false;
 	    return true;
 	}
@@ -201,9 +216,9 @@ public class User implements Serializable {
 	@Override
 	public String toString() {
 	    return "User [id=" + id + ", email=" + email + ", username="
-		    + username + ", password=" + password + ", name=" + name
-		    + ", lastname=" + lastname + ", role=" + role + ", deleted="
-		    + deleted + ", billHeads=" + billHeads + "]";
+		    + dni + ", name=" + name + ", lastname=" + lastname 
+		    + ", role=" + role + ", deleted=" + deleted + ", billHeads=" 
+		    + billHeads + "]";
 	}
    
 }

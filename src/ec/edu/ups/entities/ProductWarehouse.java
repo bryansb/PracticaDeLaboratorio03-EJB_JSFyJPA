@@ -11,7 +11,7 @@ import javax.persistence.*;
  *
  */
 @Entity
-@Table(name = "PRODUCT_DETAILS")
+@Table(name = "PRODUCT_WAREHOUSES")
 public class ProductWarehouse implements Serializable {
 
 	

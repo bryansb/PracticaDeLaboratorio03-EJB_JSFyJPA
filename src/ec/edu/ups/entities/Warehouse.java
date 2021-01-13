@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Entity implementation class for Entity: Warehouse
@@ -35,13 +36,16 @@ public class Warehouse implements Serializable {
 	
 	@Column(name="war_deleted", columnDefinition="BOOLEAN DEFAULT 0")
 	private boolean deleted;
+	
+	@Transient
+	private boolean editable;
 
 	@ManyToOne
 	@JoinColumn
 	private City city;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "warehouse")
-	private List<ProductWarehouse> productDetails;
+	private List<ProductWarehouse> productWarehouse;
 
 	public Warehouse() {
 		super();
@@ -80,11 +84,11 @@ public class Warehouse implements Serializable {
 	}
 
 	public List<ProductWarehouse> getProductDetails() {
-		return productDetails;
+		return productWarehouse;
 	}
 
 	public void setProductDetails(List<ProductWarehouse> productDetails) {
-		this.productDetails = productDetails;
+		this.productWarehouse = productDetails;
 	}
 
 	@Override
@@ -96,8 +100,16 @@ public class Warehouse implements Serializable {
 		result = prime * result + (deleted ? 1231 : 1237);
 		result = prime * result + id;
 		result = prime * result
-				+ ((productDetails == null) ? 0 : productDetails.hashCode());
+				+ ((productWarehouse == null) ? 0 : productWarehouse.hashCode());
 		return result;
+	}
+
+	public boolean isEditable() {
+	    return editable;
+	}
+
+	public void setEditable(boolean editable) {
+	    this.editable = editable;
 	}
 
 	@Override
@@ -123,10 +135,10 @@ public class Warehouse implements Serializable {
 			return false;
 		if (id != other.id)
 			return false;
-		if (productDetails == null) {
-			if (other.productDetails != null)
+		if (productWarehouse == null) {
+			if (other.productWarehouse != null)
 				return false;
-		} else if (!productDetails.equals(other.productDetails))
+		} else if (!productWarehouse.equals(other.productWarehouse))
 			return false;
 		return true;
 	}
@@ -134,8 +146,8 @@ public class Warehouse implements Serializable {
 	@Override
 	public String toString() {
 		return "Warehouse [id=" + id + ", address=" + address + ", deleted="
-				+ deleted + ", city=" + city + ", productDetails="
-				+ productDetails + "]";
+				+ deleted + ", city=" + city + ", productWarehouse="
+				+ productWarehouse + "]";
 	}
 
 }
