@@ -31,6 +31,9 @@ public class ProductWarehouse implements Serializable {
 	@Column(name = "pro_det_deleted", columnDefinition = "BOOLEAN DEFAULT 0")
 	private boolean deleted;
 	
+	@Transient
+	private boolean editable;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "productWarehouse")
 	private List<BillDetail> billDetails = new ArrayList<BillDetail>();
 	
@@ -100,6 +103,14 @@ public class ProductWarehouse implements Serializable {
 
 	public void setProduct(Product product) {
 		this.product = product;
+	}
+
+	public boolean isEditable() {
+	    return editable;
+	}
+
+	public void setEditable(boolean editable) {
+	    this.editable = editable;
 	}
 
 	@Override
