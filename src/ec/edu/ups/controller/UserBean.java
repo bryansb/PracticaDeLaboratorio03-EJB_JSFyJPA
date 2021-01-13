@@ -26,7 +26,6 @@ public class UserBean implements Serializable{
 	private String dni;
 	private String name;
 	private String lastname;
-	private boolean deleted;
 	private List<User> userList;
 	
 	public UserBean() {
@@ -35,9 +34,13 @@ public class UserBean implements Serializable{
 	
 	@PostConstruct
 	public void init() {
-		ejbUserFacade.create(new User("a", "a", "", "a", "a", 'C', false));
-		ejbUserFacade.create(new User("b", "b", "", "b", "b", 'C', false));
-		ejbUserFacade.create(new User("c", "c", "", "c", "c", 'C', false));
+		userList = ejbUserFacade.findAll();
+	}
+	
+	public void userRandom() {
+		for (int i = 0; i < 50; i++) {
+			ejbUserFacade.create(new User( "correo"+i+"@mail.com", "001000"+i, "", "nombre"+i, "apellido"+i, 'C', false));
+		}
 		userList = ejbUserFacade.findAll();
 	}
 	
@@ -101,7 +104,6 @@ public class UserBean implements Serializable{
 		dni = "";
 		name = "";
 		lastname = "";
-		deleted = false;
 	}
 
 	public String getEmail() {
@@ -134,14 +136,6 @@ public class UserBean implements Serializable{
 
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
-	}
-
-	public boolean isDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
 	}
 	
 	public List<User> getUserList() {
