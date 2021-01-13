@@ -27,6 +27,10 @@
 						<p:dataTable value="#{billHeadBean.userList}" var="u" style="text-align: center;"
 						rows="5" paginator="true" rowsPerPageTemplate="5, 10, 15">
 							<p:column>
+								<f:facet name="header">Cédula</f:facet>
+								#{u.dni}
+							</p:column>
+							<p:column>
 								<f:facet name="header">Nombre</f:facet>
 								#{u.name}
 							</p:column>
@@ -52,11 +56,17 @@
 					<p:row>
 						<form>
 							<h2><h:outputText value="Facturación"/></h2>
-							<h:panelGroup style="text-align:center;">
-								<p:panel header="Usuario Seleccionado" style="text-align:center; width:60%; margin: 0 auto;">
+							<h:panelGroup style="text-align:center;" styleClass="col-11">
+								<p:panel header="Usuario Seleccionado" style="text-align:center; margin: 0 auto;">
 									<p:panelGrid style="width:100%">
 							       		<p:row>
-							       			<p:column styleClass="my-f-w">Nombre:</p:column>
+							       			<p:column styleClass="my-f-w">Cédula:</p:column>
+							        		<p:column colspan="3">
+							        			<h:outputText value="#{billHeadBean.user.dni}"/>
+							        		</p:column>
+										</p:row>
+										<p:row>
+											<p:column styleClass="my-f-w">Nombre:</p:column>					       			
 							        		<p:column><h:outputText value="#{billHeadBean.user.name}"/></p:column>
 											<p:column styleClass="my-f-w">Apellido:</p:column>
 							        		<p:column><h:outputText value="#{billHeadBean.user.lastname}"/></p:column>
@@ -130,6 +140,9 @@
 				<h:panelGroup id="products-select">
 					<p:row>
 						<h:form rendered="#{billDetailBean.inputAmount}" id="input-amount">
+							<p:messages for="input-amount">
+				    			<p:autoUpdate/>
+				    		</p:messages>
 							<p:panel header="Agregar Cantidad" style="text-align:center; margin: 0 auto;" class="col-10">
 								<p:messages id="msgs"/>
 								<p:panelGrid cellpadding="5" style="width:100%;">
@@ -145,7 +158,10 @@
 								<div style="width:100%;">
 									<h:panelGrid columns="4" cellpadding="5" style="text-align:center; margin: 0 auto;">
 										<p:outputLabel for="product-amount" value="Cantidad:" styleClass="my-f-w"/>
-										<p:inputText value="#{billDetailBean.amount}" id="product-amount"/>
+										<p:inputText value="#{billDetailBean.amount}" id="product-amount" required="true"
+											converterMessage="Ingrese solo números"
+											validator="#{billDetailBean.validateAmount}"
+											requiredMessage="Ingrese un valor"/>
 										<p:commandButton value="Cancelar" action="#{billDetailBean.cancelProduct()}" update="products-select"/>
 										<p:commandButton value="Confimar" action="#{billDetailBean.create(billHeadBean.billHead)}"
 										update="billHead products-select"/>

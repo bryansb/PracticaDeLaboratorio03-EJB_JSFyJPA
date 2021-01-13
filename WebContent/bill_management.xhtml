@@ -36,7 +36,7 @@
 	    	rows="5" paginator="true" rowsPerPageTemplate="5, 10, 15">
 				<p:column>
 					<f:facet name="header">Cédula</f:facet>
-					#{bh.user.name}
+					#{bh.user.dni}
 				</p:column>
 				<p:column>
 					<f:facet name="header">Nombre</f:facet>
@@ -59,6 +59,11 @@
 					#{bh.total}
 				</p:column>
 				<p:column>
+					<f:facet name="header">Detalle</f:facet>
+					<p:commandButton value="Mostrar" action="#{billManagementBean.showBillDetail(bh)}" update="detail-list">
+					</p:commandButton>
+				</p:column>
+				<p:column>
 					<f:facet name="header">Anular</f:facet>
 					<p:commandButton value="Anular" action="#{billManagementBean.cancel(bh)}" update="bill-list" 
 						rendered="#{bh.status == 'A'.charAt(0)}">
@@ -68,6 +73,29 @@
 				</p:column>
 			</p:dataTable>
 		</h:panelGroup>
+		<h:panelGroup layout="block" id="detail-list" styleClass="col-12 text-right">
+			<p:commandButton action="#{billManagementBean.hideBillDetail()}" icon="fa fa-close" title="Esconder Detalle"
+			update="detail-list" rendered="#{billManagementBean.showDetail}"/>
+	    	<p:dataTable value="#{billManagementBean.billHead.billDetails}" var="bd" style="text-align: center;"
+	    	rows="5" paginator="true" rowsPerPageTemplate="5, 10, 15" rendered="#{billManagementBean.showDetail}">
+	    		<p:column>
+					<f:facet name="header">Nombre del Prod.</f:facet>
+					#{bd.productWarehouse.product.name}
+				</p:column>
+				<p:column>
+					<f:facet name="header">Precio Unit.</f:facet>
+					#{bd.unitPrice}
+				</p:column>
+				<p:column>
+					<f:facet name="header">Cantidad</f:facet>
+					#{bd.amount}
+				</p:column>
+				<p:column>
+					<f:facet name="header">Total</f:facet>
+					#{bd.total}
+				</p:column>
+	    	</p:dataTable>
+	    </h:panelGroup>
    	</ui:define>
     
 </ui:composition>

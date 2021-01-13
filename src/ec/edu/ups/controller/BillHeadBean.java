@@ -50,14 +50,19 @@ public class BillHeadBean implements Serializable{
 	@PostConstruct
 	public void init() {
 		User u = new User();
-		for (int i = 0; i < 10; i++) {
-			u = new User();
-			u.setName("n " + i);
-			u.setLastname("L " + i);
-			u.setEmail("e" + i + new Date());
-			u.setPassword("");
-			u.setRole('C');
-			ejbUserFacade.create(u);
+		try {
+			for (int i = 0; i < 10; i++) {
+				u = new User();
+				u.setName("n " + i);
+				u.setLastname("L " + i);
+				u.setDni("dni" + i);
+				u.setEmail("e" + i + new Date());
+				u.setPassword("");
+				u.setRole('C');
+				ejbUserFacade.create(u);
+			}
+		} catch (Exception e) {
+			
 		}
 		billDetailList = new ArrayList<>();
 	}
