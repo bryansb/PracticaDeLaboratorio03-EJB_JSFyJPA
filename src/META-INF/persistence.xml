@@ -16,7 +16,7 @@
 		<class>ec.edu.ups.entities.ProductWarehouse</class>
 		<properties>
 			<property name="javax.persistence.schema-generation.database.action" 
-				value="drop-and-create" />
+				value="none" />
 			<property name="eclipselink.target-database" value="MySQL"/>
 		</properties>
 	</persistence-unit>

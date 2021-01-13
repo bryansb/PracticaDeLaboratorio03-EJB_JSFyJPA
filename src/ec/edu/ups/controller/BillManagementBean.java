@@ -33,6 +33,9 @@ public class BillManagementBean implements Serializable {
 	private Date startTime;
 	private Date endTime;
 	
+	private BillHead billHead;
+	private boolean showDetail;
+	
 	public BillManagementBean() {
 		super();
 	}
@@ -73,6 +76,16 @@ public class BillManagementBean implements Serializable {
 		return billHeadList;
 	}
 	
+	public void showBillDetail(BillHead billHead) {
+		setBillHead(billHead);
+		showDetail = true;
+	}
+	
+	public void hideBillDetail() {
+		setBillHead(null);
+		showDetail = false;
+	}
+	
 	public void setBillHeadList(List<BillHead> billHeadList) {
 		this.billHeadList = billHeadList;
 	}
@@ -99,5 +112,21 @@ public class BillManagementBean implements Serializable {
 	
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
+	}
+
+	public BillHead getBillHead() {
+		return billHead;
+	}
+
+	public void setBillHead(BillHead billHead) {
+		this.billHead = billHead;
+	}
+
+	public boolean isShowDetail() {
+		return showDetail;
+	}
+
+	public void setShowDetail(boolean showDetail) {
+		this.showDetail = showDetail;
 	}
 }

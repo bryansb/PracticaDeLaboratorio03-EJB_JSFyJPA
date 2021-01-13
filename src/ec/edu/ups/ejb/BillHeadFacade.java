@@ -19,7 +19,7 @@ public class BillHeadFacade extends AbstractFacade<BillHead>{
 	private static final String FIND_BY_DNI_AND_DATE_QRY = 
 			"SELECT bh FROM BillHead bh WHERE bh.date "
 			+ " BETWEEN :startDate AND :endDate AND "
-			+ " bh.user.email LIKE :dni ORDER BY bh.date DESC";
+			+ " bh.user.dni LIKE :dni ORDER BY bh.date DESC";
 	
     public BillHeadFacade() {
     	super(BillHead.class);
@@ -31,9 +31,9 @@ public class BillHeadFacade extends AbstractFacade<BillHead>{
 	}
 	
 	public List<BillHead> filterByUserDni(String dni) {
-		String[][] attributes = {{"user", "email"}};
+		String[][] attributes = {{"user", "dni"}};
 		String[] values = {"like&%" + dni + "%"};
-		return super.findByPath(attributes, values, "date", 0, 0, false, false);
+		return super.findByPath(attributes, values, new String[] {"date"}, 0, 0, false, false);
 	}
 	
 	public List<BillHead> filterByDate(Date startTime, Date endTime) {
