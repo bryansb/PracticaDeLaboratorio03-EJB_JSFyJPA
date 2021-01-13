@@ -33,7 +33,7 @@ public class BillHeadFacade extends AbstractFacade<BillHead>{
 	public List<BillHead> filterByUserDni(String dni) {
 		String[][] attributes = {{"user", "dni"}};
 		String[] values = {"like&%" + dni + "%"};
-		return super.findByPath(attributes, values, "date", 0, 0, false, false);
+		return super.findByPath(attributes, values, new String[] {"date"}, 0, 0, false, false);
 	}
 	
 	public List<BillHead> filterByDate(Date startTime, Date endTime) {

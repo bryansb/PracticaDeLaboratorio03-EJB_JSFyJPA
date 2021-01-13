@@ -13,6 +13,7 @@
     
     <ui:define name="body-content">
     	<h:form id="filter-list" styleClass="col-12">
+    		<h2>Gestión de Facturas</h2>
     		<div class="row justify-content-center">
 		    	<h:panelGroup layout="block" id="search-by-user" styleClass="col-4">
 		    		<p:outputLabel for="user-dni" value="Filtrar por cédula"/><br/>
@@ -74,6 +75,10 @@
 			</p:dataTable>
 		</h:panelGroup>
 		<h:panelGroup layout="block" id="detail-list" styleClass="col-12 text-right">
+			<h:panelGroup layout="block" styleClass="col-12 text-left" 
+			rendered="#{billManagementBean.showDetail}">
+    			<h4>Detalle</h4>
+    		</h:panelGroup>
 			<p:commandButton action="#{billManagementBean.hideBillDetail()}" icon="fa fa-close" title="Esconder Detalle"
 			update="detail-list" rendered="#{billManagementBean.showDetail}"/>
 	    	<p:dataTable value="#{billManagementBean.billHead.billDetails}" var="bd" style="text-align: center;"
