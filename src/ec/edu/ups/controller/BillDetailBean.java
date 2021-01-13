@@ -7,14 +7,21 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.annotation.FacesConfig;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
 
 import ec.edu.ups.ejb.BillDetailFacade;
-import ec.edu.ups.ejb.BillHeadFacade;
+import ec.edu.ups.ejb.CategoryFacade;
 import ec.edu.ups.ejb.ProductWarehouseFacade;
+import ec.edu.ups.ejb.WarehouseFacade;
 import ec.edu.ups.entities.BillDetail;
 import ec.edu.ups.entities.BillHead;
+import ec.edu.ups.entities.Category;
 import ec.edu.ups.entities.ProductWarehouse;
+import ec.edu.ups.entities.Warehouse;
 
 @FacesConfig(version = FacesConfig.Version.JSF_2_3)
 @Named
@@ -24,12 +31,14 @@ public class BillDetailBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EJB
-	private BillHeadFacade ejbBillHeadFacade;
+	private WarehouseFacade ejbWarehouseFacade;
+	
+	@EJB
+	private CategoryFacade ejbCategoryFacade;
 	
 	@EJB
 	private BillDetailFacade ejbBillDetailFacade;
 	
-	//TEMP
 	@EJB
 	private ProductWarehouseFacade ejbProductWarehouseFacade;
 	
@@ -37,8 +46,15 @@ public class BillDetailBean implements Serializable {
 	private ProductWarehouse productWarehouse;
 	private BillHead billHead;
 	private List<ProductWarehouse> productWarehouseList;
+	private String current;
 	
 	private boolean inputAmount;
+	
+	private List<Warehouse> warehouseList;
+	private List<Category> categoryList;
+	
+	private int warehouseId;
+	private int categoryId;
 	
 	public BillDetailBean() {
 		this.amount = 1;
@@ -46,13 +62,9 @@ public class BillDetailBean implements Serializable {
 	
 	@PostConstruct
 	public void init() {
-		for (int i = 0; i < 10; i++) {
-			ProductWarehouse pd = new ProductWarehouse();
-			pd.setPrice((i  + 1) * 100.0);
-			pd.setStock((i  + 1) * 10);
-			ejbProductWarehouseFacade.create(pd);
-		}
-		this.productWarehouseList = ejbProductWarehouseFacade.findAll();
+		warehouseList = ejbWarehouseFacade.findAll();
+		categoryList = ejbCategoryFacade.findAll();
+		filterProductWarehouse();
 	}
 	
 	public List<BillDetail> getBillDetailList() {
@@ -60,28 +72,41 @@ public class BillDetailBean implements Serializable {
 	}
 	
 	public List<ProductWarehouse> getProductWarehouseList() {
-		return this.productWarehouseList;
+		filterProductWarehouse();
+		return productWarehouseList;
 	}
-	
+
+	public void setProductWarehouseList(
+			List<ProductWarehouse> productWarehouseList) {
+		this.productWarehouseList = productWarehouseList;
+	}
+
 	public String create(BillHead billHead) {
-		if(this.amount <= this.productWarehouse.getStock()) {
-			billHead.createBillDetail(this.amount, 
-					this.productWarehouse.getPrice(), 
-					this.productWarehouse, billHead);
-			this.inputAmount = false;
-			this.productWarehouse.setStock(this.productWarehouse.getStock() 
-					- this.amount);
-		}
+		billHead.createBillDetail(this.amount, 
+				this.productWarehouse.getPrice(), 
+				this.productWarehouse, billHead);
+		this.inputAmount = false;
+		this.productWarehouse.setStock(this.productWarehouse.getStock() 
+				- this.amount);
 		this.amount = 1;
 		billHead.calculateTotal();
 		return null;
 	}
 	
-	public String validateAmount() {
-		if(this.amount <= this.productWarehouse.getStock()) {
-			
+	public void validateAmount(FacesContext context, UIComponent componentToValidate, 
+			Object value) {
+		Integer amount = (Integer) value;
+		if (amount <= 0) {
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+					"La cantidad no puede ser menor o igual a cero", null);
+			throw new ValidatorException(message);
 		}
-		return null;
+		if (amount > productWarehouse.getStock()) {
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+					"La cantidad debe ser menor o igual al stock: "
+							+ productWarehouse.getStock(), null);
+			throw new ValidatorException(message);
+		} 
 	}
 	
 	public String cancelBilling() {
@@ -109,14 +134,31 @@ public class BillDetailBean implements Serializable {
 		return null;
 	}
 	
-	public BillHeadFacade getEjbBillHeadFacade() {
-		return ejbBillHeadFacade;
+	public String cancelBillDetail(BillHead billHead) {
+		for (BillDetail billDetail : billHead.getBillDetails()) {
+			ProductWarehouse productWarehouse = billDetail.getProductWarehouse();
+			int amount = billDetail.getAmount();
+			int stock = billDetail.getProductWarehouse().getStock();
+			productWarehouse.setStock(stock + amount);
+			ejbProductWarehouseFacade.update(productWarehouse);
+		}
+		productWarehouseList = ejbProductWarehouseFacade.findAll();
+		return null;
 	}
-
-	public void setEjbBillHeadFacade(BillHeadFacade ejbBillHeadFacade) {
-		this.ejbBillHeadFacade = ejbBillHeadFacade;
+	
+	public void filterProductWarehouse() {
+		if (warehouseId != 0 && categoryId != 0) {
+			productWarehouseList = ejbProductWarehouseFacade
+					.findByWarehouseAndCategoryId(warehouseId, categoryId);
+		} else if (warehouseId == 0 && categoryId != 0) {
+			productWarehouseList = ejbProductWarehouseFacade.findByCategoryId(categoryId);
+		} else if (warehouseId != 0 && categoryId == 0) {
+			productWarehouseList = ejbProductWarehouseFacade.findByWarehouseId(warehouseId);
+		} else {
+			productWarehouseList = ejbProductWarehouseFacade.findAllOrderedByProductName();
+		}
 	}
-
+	
 	public int getAmount() {
 		return amount;
 	}
@@ -147,5 +189,51 @@ public class BillDetailBean implements Serializable {
 
 	public void setInputAmount(boolean inputAmount) {
 		this.inputAmount = inputAmount;
+	}
+
+	public String getCurrent() {
+		return current;
+	}
+
+	public void setCurrent(String current) {
+		this.current = current;
+	}
+	
+	public List<Warehouse> getWarehouseList() {
+		return warehouseList;
+	}
+
+	public void setWarehouseList(List<Warehouse> warehouseList) {
+		this.warehouseList = warehouseList;
+	}
+
+	public List<Category> getCategoryList() {
+		return categoryList;
+	}
+
+	public void setCategoryList(List<Category> categoryList) {
+		this.categoryList = categoryList;
+	}
+
+	public int getWarehouseId() {
+		return warehouseId;
+	}
+
+	public void setWarehouseId(int warehouseId) {
+		this.warehouseId = warehouseId;
+	}
+
+	public int getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public String printCurrent() {
+		ProductWarehouse p = ejbProductWarehouseFacade.read(Integer.parseInt(current));
+		System.out.println(p.getStock());
+		return null;
 	}
 }

@@ -30,7 +30,7 @@ public class BillHeadBean implements Serializable{
 	private BillHeadFacade ejbBillHeadFacade;
 	
 	@EJB
-	private ProductWarehouseFacade productWarehouseFacade;
+	private ProductWarehouseFacade ejbProductWarehouseFacade;
 	
 	@EJB
 	private UserFacade ejbUserFacade;
@@ -41,6 +41,8 @@ public class BillHeadBean implements Serializable{
 	private boolean userSelected;
 	private List<BillDetail> billDetailList;
 	
+	private String dniUserSearch;
+	
 	public BillHeadBean() {
 		super();
 	}
@@ -48,15 +50,19 @@ public class BillHeadBean implements Serializable{
 	@PostConstruct
 	public void init() {
 		User u = new User();
-		for (int i = 0; i < 10; i++) {
-			u = new User();
-			u.setName("n " + i);
-			u.setLastname("L " + i);
-			u.setEmail("e " + i + " " + new Date());
-			u.setPassword("");
-			u.setRole('c');
-			u.setUsername("u " + i + " " + new Date());
-			ejbUserFacade.create(u);
+		try {
+			for (int i = 0; i < 10; i++) {
+				u = new User();
+				u.setName("n " + i);
+				u.setLastname("L " + i);
+				u.setDni("dni" + i);
+				u.setEmail("e" + i + new Date());
+				u.setPassword("");
+				u.setRole('C');
+				ejbUserFacade.create(u);
+			}
+		} catch (Exception e) {
+			
 		}
 		billDetailList = new ArrayList<>();
 	}
@@ -77,15 +83,9 @@ public class BillHeadBean implements Serializable{
 		this.billHead.calculateTotal();
 		this.ejbBillHeadFacade.create(this.billHead);
 		for (BillDetail billDetail: this.billHead.getBillDetails()) {
-			productWarehouseFacade.update(billDetail.getProductWarehouse());
+			ejbProductWarehouseFacade.update(billDetail.getProductWarehouse());
 		}
 		resetBilling();
-		return null;
-	}
-	
-	public String cancel(BillHead billHead) {
-		billHead.setStatus('C');
-		ejbBillHeadFacade.update(billHead);
 		return null;
 	}
 	
@@ -93,7 +93,8 @@ public class BillHeadBean implements Serializable{
 		int actualStock = billDetail.getProductWarehouse().getStock();
 		int billDetailAmount = billDetail.getAmount(); 
 		billDetail.getProductWarehouse().setStock(actualStock + billDetailAmount);
-		this.billHead.getBillDetails().remove(billDetail);
+		billHead.getBillDetails().remove(billDetail);
+		billHead.calculateTotal();
 		return null;
 	}
 	
@@ -108,10 +109,6 @@ public class BillHeadBean implements Serializable{
 	public String changeUser() {
 		this.userSelected = false;
 		return null;
-	}
-	
-	public List<BillHead> getBillHeadList(){
-		return this.ejbBillHeadFacade.findAll();
 	}
 	
 	public List<User> getUserList() {
@@ -150,5 +147,13 @@ public class BillHeadBean implements Serializable{
 
 	public void setBillDetailList(List<BillDetail> billDetailList) {
 		this.billDetailList = billDetailList;
+	}
+
+	public String getDniUserSearch() {
+		return dniUserSearch;
+	}
+
+	public void setDniUserSearch(String dniUserSearch) {
+		this.dniUserSearch = dniUserSearch;
 	}
 }
