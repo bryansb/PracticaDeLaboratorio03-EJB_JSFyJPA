@@ -35,6 +35,7 @@ public class ProductWarehouseBean implements Serializable {
     
     
     private List<ProductWarehouse> productWarehouseList;
+    private List<ProductWarehouse> selectedList;
     private List<Warehouse> warehouseList;
     private List<Product> productList;
     
@@ -51,6 +52,11 @@ public class ProductWarehouseBean implements Serializable {
     
     @PostConstruct
     public void init() {
+	loadProducts();
+	loadProductWarehouses();
+    }
+    
+    public void getProductsByWarehouse() {
 	
     }
     
@@ -58,8 +64,25 @@ public class ProductWarehouseBean implements Serializable {
 	this.productWarehouseList = this.productWarehouseFacade.findAll();
     }
     
-    public String create() {
+    public void loadProducts() {
+	this.productList = this.productFacade.findAll();
+    }
+    
+    public String create(Warehouse warehouse) {
+	ProductWarehouse productWarehouse = new ProductWarehouse();
+	productWarehouse.setPrice(this.price);
+	productWarehouse.setStock(this.stock);
 	
+	this.product = productFacade.read(index);
+	productWarehouse.setProduct(this.product);
+	
+	this.warehouse = warehouse;
+	productWarehouse.setWarehouse(this.warehouse);
+	
+	productWarehouseFacade.create(productWarehouse);
+	
+	loadProductWarehouses();
+	getProductsByWarehouse();
 	return null;
     }
     
@@ -116,6 +139,14 @@ public class ProductWarehouseBean implements Serializable {
     public void setProductWarehouseList(
     	List<ProductWarehouse> productWarehouseList) {
         this.productWarehouseList = productWarehouseList;
+    }
+
+    public List<ProductWarehouse> getSelectedList() {
+        return selectedList;
+    }
+
+    public void setSelectedList(List<ProductWarehouse> selectedList) {
+        this.selectedList = selectedList;
     }
 
     public Warehouse getWarehouse() {
