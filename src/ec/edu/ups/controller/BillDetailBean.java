@@ -56,12 +56,15 @@ public class BillDetailBean implements Serializable {
 	private int warehouseId;
 	private int categoryId;
 	
+	private String productName;
+	
 	public BillDetailBean() {
-		this.amount = 1;
 	}
 	
 	@PostConstruct
 	public void init() {
+		this.amount = 1;
+		productName = "";
 		warehouseList = ejbWarehouseFacade.findAll();
 		categoryList = ejbCategoryFacade.findAll();
 		filterProductWarehouse();
@@ -149,13 +152,13 @@ public class BillDetailBean implements Serializable {
 	public void filterProductWarehouse() {
 		if (warehouseId != 0 && categoryId != 0) {
 			productWarehouseList = ejbProductWarehouseFacade
-					.findByWarehouseAndCategoryId(warehouseId, categoryId);
+					.findByWarehouseAndCategoryId(warehouseId, categoryId, productName);
 		} else if (warehouseId == 0 && categoryId != 0) {
-			productWarehouseList = ejbProductWarehouseFacade.findByCategoryId(categoryId);
+			productWarehouseList = ejbProductWarehouseFacade.findByCategoryId(categoryId, productName);
 		} else if (warehouseId != 0 && categoryId == 0) {
-			productWarehouseList = ejbProductWarehouseFacade.findByWarehouseId(warehouseId);
+			productWarehouseList = ejbProductWarehouseFacade.findByWarehouseId(warehouseId, productName);
 		} else {
-			productWarehouseList = ejbProductWarehouseFacade.findAllOrderedByProductName();
+			productWarehouseList = ejbProductWarehouseFacade.findAllOrderedByProductName(productName);
 		}
 	}
 	
@@ -229,6 +232,14 @@ public class BillDetailBean implements Serializable {
 
 	public void setCategoryId(int categoryId) {
 		this.categoryId = categoryId;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 
 	public String printCurrent() {

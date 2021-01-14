@@ -13,7 +13,7 @@
 			    <p:menuitem value="Inicio" url="index.jsf"/>
 			    <f:facet name="options">
 			        <p:commandButton value="Iniciar Sesión" action="login?faces-redirect=true"
-			        icon="fa fa-home" rendered="#{user == null}"/>
+			        icon="fa fa-sign-in" rendered="#{user == null}"/>
 			        <p:commandButton value="Cerrar Sesión" action="#{loginBean.logout()}" ajax="false"
 			        icon="fa fa-close" rendered="#{user != null}"/>
 			    </f:facet>

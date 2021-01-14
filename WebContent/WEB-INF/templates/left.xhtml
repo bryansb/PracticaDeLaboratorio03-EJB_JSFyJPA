@@ -12,9 +12,10 @@
 	</h:form>
 	<h:form rendered="#{user.role == 'A'.charAt(0)}">
 		<p:menu toggleable="true" style="width:100%">
+			<p:menuitem value="Inicio" action="home" ajax="false"/>
      		<p:submenu label="Bodegas">
-           		<p:menuitem value="Inventario" url="http://www.primefaces.org"/>
-           		<p:menuitem value="Gestión" url="http://www.primefaces.org"/>
+           		<p:menuitem value="Bodegas" action="warehouse" ajax="true"/>
+           		<p:menuitem value="Productos" action="product" ajax="true"/>
        		</p:submenu>
    		</p:menu>
 	</h:form>

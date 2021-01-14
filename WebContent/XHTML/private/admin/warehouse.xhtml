@@ -1,57 +1,61 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://java.sun.com/jsf/core"
+<ui:composition template="/WEB-INF/templates/common.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui"
     xmlns:c="http://java.sun.com/jsp/jstl/core">
     
-
-	<h:head>
-	
-	</h:head>
-	
-	<h:body>
+    <ui:define name="title">Gestión de Bodegas</ui:define>
+    
+    <ui:define name="body-content">
     	<h:panelGroup id="main-content">
-    	<h3>Gestión de Bodegas</h3>
+    	<h2>Gestión de Bodegas</h2>
     	
     		<!-- // CREAR  -->
     		<h:form id="warehouse-create">
 	    		<p:messages for="warehouse-create">
 	    			<p:autoUpdate/>
 	    		</p:messages>
-				<div class="p-col-11 p-justify-center" style="text-align:center;">
-					<h2>Crear Bodegas</h2>
-	    			<p:outputLabel for="warehouse-city" value="Ciudad:" />
-	            	<p:selectOneMenu id="warehouse-city" value="#{warehouseBean.index}" panelStyle="width:180px"
-                         effect="fade" var="c" style="width:160px" filter="true" filterMatchMode="startsWith">
-                         
-			            <c:forEach items="#{warehouseBean.cityList}" var="cl" varStatus="loop">
-			            	<f:selectItem itemLabel="#{cl.name}" itemValue="#{cl.id}" />		            
-			            </c:forEach>
-						
-			            <p:column>
-			               <f:facet name="header">
-			                   <h:outputText value="Ciudad"/>
-			                </f:facet>
-			                <h:outputText value="#{c}" />
-			            </p:column>
-			        </p:selectOneMenu>
-			        
-					<p:outputLabel for="warehouse-address" value="Dirección:" />
-					<p:inputText id="warehouse-address" value="#{warehouseBean.address}" />
-					
-					<p:commandButton value="Crear Nueva Bodega" action="#{warehouseBean.create()}"
-						update="main-content"/>
+				<div class="col-12 text-center">
+					<h3>Crear Bodegas</h3>
+					<div class="row m-4 justify-content-center">
+						<div class="col-lg-4 col-md-12">
+			    			<p:outputLabel for="warehouse-city" value="Ciudad:" /><br/>
+			            	<p:selectOneMenu id="warehouse-city" value="#{warehouseBean.index}" panelStyle="width:180px"
+		                         effect="fade" var="c" style="width:160px" filter="true" filterMatchMode="startsWith">
+		                         
+					            <c:forEach items="#{warehouseBean.cityList}" var="cl" varStatus="loop">
+					            	<f:selectItem itemLabel="#{cl.name}" itemValue="#{cl.id}" />		            
+					            </c:forEach>
+								
+					            <p:column>
+					               <f:facet name="header">
+					                   <h:outputText value="Ciudad"/>
+					                </f:facet>
+					                <h:outputText value="#{c}" />
+					            </p:column>
+					        </p:selectOneMenu>
+			        	</div>
+			        	<div class="col-lg-4 col-md-12">
+							<p:outputLabel for="warehouse-address" value="Dirección:" /><br/>
+							<p:inputText id="warehouse-address" value="#{warehouseBean.address}" />
+						</div>
+						<div class="col-lg-4 col-md-12">
+							<p:commandButton value="Crear Nueva Bodega" action="#{warehouseBean.create()}"
+								update="main-content"/>
+						</div>
+					</div>
 	    		</div>    			
     		</h:form>
     		
     		<!-- // LISTAR -->
     		<h:form>
     			<p:dataTable id="warehouses" value="#{warehouseBean.warehouseList}" 
-    				var="w" rows="5" paginator="true" rowsPerPageTemplate="5, 10, 15">
+    				var="w" rows="5" paginator="true" rowsPerPageTemplate="5, 10, 15" styleClass="text-center m-5">
 					<p:column>
 						<f:facet name="header">Ciudad</f:facet>
 						#{w.city.name}
@@ -97,39 +101,48 @@
 	    		</p:messages>
 	    		
 				<div class="p-col-11 p-justify-center" style="text-align:center;">
-					<h2>Agregar Productos</h2>
-	    			<p:outputLabel for="products" value="Producto:" />
-	            	<p:selectOneMenu id="products" value="#{productWarehouseBean.index}" panelStyle="width:180px"
-                         effect="fade" var="p" style="width:160px" filter="true" filterMatchMode="startsWith"
-                         validator="#{productWarehouseBean.validator}">
-                         
-			            <c:forEach items="#{productWarehouseBean.productList}" var="pl" varStatus="loop">
-			            	<f:selectItem itemLabel="#{pl.name}" itemValue="#{pl.id}" />		            
-			            </c:forEach>
-						
-			            <p:column>
-			               <f:facet name="header">
-			                   <h:outputText value="Producto"/>
-			                </f:facet>
-			                <h:outputText value="#{p}" />
-			            </p:column>
-			        </p:selectOneMenu>
-			        
-					<p:outputLabel for="product-stock" value="Stock Inicial:" />
-					<p:inputNumber id="product-stock" value="#{productWarehouseBean.stock}" />
-					
-					<p:outputLabel for="product-price" value="Precio:" />
-					<p:inputNumber id="product-price" symbol="$ " symbolPosition="p" 
-						decimalPlaces="2" value="#{productWarehouseBean.price}" />
-					
-					<p:commandButton value="Agregar a Bodega" 
-						action="#{productWarehouseBean.create()}"
-						update="main-content"/>
+					<h3>Agregar Productos</h3>
+					<br/>
+					<div class="row">
+						<div class="col-lg-3 col-md-12">
+			    			<p:outputLabel for="products" value="Producto:" /><br/>
+			            	<p:selectOneMenu id="products" value="#{productWarehouseBean.index}" panelStyle="width:180px"
+		                         effect="fade" var="p" style="width:160px" filter="true" filterMatchMode="startsWith"
+		                         validator="#{productWarehouseBean.validator}">
+		                         
+					            <c:forEach items="#{productWarehouseBean.productList}" var="pl" varStatus="loop">
+					            	<f:selectItem itemLabel="#{pl.name}" itemValue="#{pl.id}" />		            
+					            </c:forEach>
+								
+					            <p:column>
+					               <f:facet name="header">
+					                   <h:outputText value="Producto"/>
+					                </f:facet>
+					                <h:outputText value="#{p}" />
+					            </p:column>
+					        </p:selectOneMenu>
+				        </div>
+				        <div class="col-lg-3 col-md-12">
+							<p:outputLabel for="product-stock" value="Stock Inicial:" /><br/>
+							<p:inputNumber id="product-stock" value="#{productWarehouseBean.stock}" />
+						</div>
+						<div class="col-lg-3 col-md-12">
+							<p:outputLabel for="product-price" value="Precio:" /><br/>
+							<p:inputNumber id="product-price" symbol="$ " symbolPosition="p" 
+								decimalPlaces="2" value="#{productWarehouseBean.price}" />
+						</div>
+						<div class="col-lg-3 col-md-12">
+							<p:commandButton value="Agregar a Bodega" 
+								action="#{productWarehouseBean.create()}"
+								update="main-content"/>
+						</div>
+					</div>
 	    		</div>
 
    			</h:form>
    			
    			<h:form rendered="#{warehouseBean.selectedWarehouse.selected}">
+   				<br/>
    				<p:dataTable id="productsWarehouse" value="#{productWarehouseBean.selectedList}" var="swp"
    					rows="5" paginator="true" rowsPerPageTemplate="5, 10, 15">
     				<p:column>
@@ -164,7 +177,6 @@
    			</h:form>
     		
     	</h:panelGroup>
-    
-	</h:body>
-    
-</html>
+	</ui:define>
+
+</ui:composition>

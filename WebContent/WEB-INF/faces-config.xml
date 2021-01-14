@@ -16,61 +16,154 @@
 		<navigation-case>
 			<from-outcome>home</from-outcome>
 			<to-view-id>/index.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>product</from-outcome>
+			<to-view-id>/XHTML/private/admin/product.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>warehouse</from-outcome>
+			<to-view-id>/XHTML/private/admin/warehouse.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>billing</from-outcome>
-			<to-view-id>/billing.xhtml</to-view-id>
+			<to-view-id>/XHTML/private/employee/billing.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>bill-management</from-outcome>
-			<to-view-id>/bill_management.xhtml</to-view-id>
+			<to-view-id>/XHTML/private/employee/bill_management.xhtml</to-view-id>
 		</navigation-case>
 		<!-- /LEFT MENU -->
 	</navigation-rule>
 	
 	<!-- 
-		PATH: /XHTML/private/admin/
+		PATH: /XHTML/private/employee/
 		XHTML FILE: billing.xhtml
 	 -->
 	<navigation-rule>
 		<display-name>billing</display-name>
-		<from-view-id>/billing.xhtml</from-view-id>
+		<from-view-id>/XHTML/private/employee/billing.xhtml</from-view-id>
 		<!-- LEFT MENU -->
 		<navigation-case>
 			<from-outcome>home</from-outcome>
 			<to-view-id>/index.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>product</from-outcome>
+			<to-view-id>/XHTML/private/admin/product.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>warehouse</from-outcome>
+			<to-view-id>/XHTML/private/admin/warehouse.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>billing</from-outcome>
-			<to-view-id>/billing.xhtml</to-view-id>
+			<to-view-id>/XHTML/private/employee/billing.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>bill-management</from-outcome>
-			<to-view-id>/bill_management.xhtml</to-view-id>
+			<to-view-id>/XHTML/private/employee/bill_management.xhtml</to-view-id>
 		</navigation-case>
 		<!-- /LEFT MENU -->
 	</navigation-rule>
 	
 	<!-- 
-		PATH: /XHTML/private/admin/
+		PATH: /XHTML/private/employee/
 		XHTML FILE: bill_management.xhtml
 	 -->
 	 <navigation-rule>
 		<display-name>Bill Management</display-name>
-		<from-view-id>/bill_management.xhtml</from-view-id>
+		<from-view-id>/XHTML/private/employee/bill_management.xhtml</from-view-id>
 		<!-- LEFT MENU -->
 		<navigation-case>
 			<from-outcome>home</from-outcome>
 			<to-view-id>/index.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>product</from-outcome>
+			<to-view-id>/XHTML/private/admin/product.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>warehouse</from-outcome>
+			<to-view-id>/XHTML/private/admin/warehouse.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>billing</from-outcome>
-			<to-view-id>/billing.xhtml</to-view-id>
+			<to-view-id>/XHTML/private/employee/billing.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>bill-management</from-outcome>
-			<to-view-id>/bill_management.xhtml</to-view-id>
+			<to-view-id>/XHTML/private/employee/bill_management.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- 
+		PATH: /XHTML/private/admin/
+		XHTML FILE: product.xhtml
+	 -->
+	<navigation-rule>
+		<display-name>Product</display-name>
+		<from-view-id>/XHTML/private/admin/product.xhtml</from-view-id>
+		<!-- LEFT MENU -->
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/index.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>product</from-outcome>
+			<to-view-id>/XHTML/private/admin/product.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>warehouse</from-outcome>
+			<to-view-id>/XHTML/private/admin/warehouse.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>billing</from-outcome>
+			<to-view-id>/XHTML/private/employee/billing.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>bill-management</from-outcome>
+			<to-view-id>/XHTML/private/employee/bill_management.xhtml</to-view-id>
 		</navigation-case>
 		<!-- /LEFT MENU -->
 	</navigation-rule>
+	
+	
+	
+	<!-- 
+		PATH: /XHTML/private/admin/
+		XHTML FILE: warehouse.xhtml
+	 -->
+	<navigation-rule>
+		<display-name>Warehouse</display-name>
+		<from-view-id>/XHTML/private/admin/warehouse.xhtml</from-view-id>
+		<!-- LEFT MENU -->
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/index.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>product</from-outcome>
+			<to-view-id>/XHTML/private/admin/product.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>warehouse</from-outcome>
+			<to-view-id>/XHTML/private/admin/warehouse.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>billing</from-outcome>
+			<to-view-id>/XHTML/private/employee/billing.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>bill-management</from-outcome>
+			<to-view-id>/XHTML/private/employee/bill_management.xhtml</to-view-id>
+		</navigation-case>
+		<!-- /LEFT MENU -->
+	</navigation-rule>
+	
 </faces-config>

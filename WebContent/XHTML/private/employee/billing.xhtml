@@ -176,8 +176,8 @@
 							<h3>Seleccionar Producto:</h3>
 							<div class="p-col-11 p-justify-center" style="text-align:center;">
 					    			<p:outputLabel for="product-name" style="display:none" value="Nombre del producto"/>
-					            	<p:inputText id="product-name" placeholder="Buscar producto" styleClass="p-col-4"/>
-						            <p:commandButton value="Buscar" styleClass="p-col-2"/>
+					            	<p:inputText id="product-name" value="#{billDetailBean.productName}" placeholder="Buscar producto" styleClass="p-col-4"/>
+						            <p:commandButton value="Buscar" styleClass="p-col-2" update="product-list-choose"/>
 				    		</div>
 				    		
 				    		<!-- FILTROS -->

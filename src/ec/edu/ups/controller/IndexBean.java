@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.annotation.FacesConfig;
 import javax.inject.Named;
 
@@ -18,7 +18,7 @@ import ec.edu.ups.entities.Warehouse;
 
 @FacesConfig(version = FacesConfig.Version.JSF_2_3)
 @Named
-@RequestScoped
+@SessionScoped
 public class IndexBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -40,8 +40,14 @@ public class IndexBean implements Serializable{
 	private int warehouseId;
 	private int categoryId;
 	
+	private String productName;
+	
+	public IndexBean() {
+	}
+	
 	@PostConstruct
 	public void init() {
+		productName = "";
 		warehouseList = ejbWarehouseFacade.findAll();
 		categoryList = ejbCategoryFacade.findAll();
 		filterProductWarehouse();
@@ -50,13 +56,13 @@ public class IndexBean implements Serializable{
 	public void filterProductWarehouse() {
 		if (warehouseId != 0 && categoryId != 0) {
 			productWarehouseList = ejbProductWarehouseFacade
-					.findByWarehouseAndCategoryId(warehouseId, categoryId);
+					.findByWarehouseAndCategoryId(warehouseId, categoryId, productName);
 		} else if (warehouseId == 0 && categoryId != 0) {
-			productWarehouseList = ejbProductWarehouseFacade.findByCategoryId(categoryId);
+			productWarehouseList = ejbProductWarehouseFacade.findByCategoryId(categoryId, productName);
 		} else if (warehouseId != 0 && categoryId == 0) {
-			productWarehouseList = ejbProductWarehouseFacade.findByWarehouseId(warehouseId);
+			productWarehouseList = ejbProductWarehouseFacade.findByWarehouseId(warehouseId, productName);
 		} else {
-			productWarehouseList = ejbProductWarehouseFacade.findAllOrderedByProductName();
+			productWarehouseList = ejbProductWarehouseFacade.findAllOrderedByProductName(productName);
 		}
 	}
 	
@@ -100,5 +106,13 @@ public class IndexBean implements Serializable{
 
 	public void setCategoryId(int categoryId) {
 		this.categoryId = categoryId;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
 	}
 }
