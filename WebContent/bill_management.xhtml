@@ -12,26 +12,39 @@
     <ui:define name="title">Gestión de Facturas</ui:define>
     
     <ui:define name="body-content">
+    	<h2>Gestión de Facturas</h2>
+    	<br/>
     	<h:form id="filter-list" styleClass="col-12">
-    		<h2>Gestión de Facturas</h2>
-    		<div class="row justify-content-center">
-		    	<h:panelGroup layout="block" id="search-by-user" styleClass="col-4">
-		    		<p:outputLabel for="user-dni" value="Filtrar por cédula"/><br/>
-		           	<p:inputText id="user-dni" placeholder="Número de cédula" value="#{billManagementBean.userDni}"/>
+    		
+    		<div class="row justify-content-center text-center">
+		    	<h:panelGroup layout="block" id="search-by-user" styleClass="col-2">
+		    		<div class="row justify-content-center">
+			    		<p:outputLabel for="user-dni" value="Filtrar por cédula" styleClass="col-12 my-f-w"/><br/>
+			           	<p:inputText id="user-dni" placeholder="Número de cédula" value="#{billManagementBean.userDni}"/>
+		           	</div>
 		    	</h:panelGroup>
-		    	<h:panelGroup layout="block" id="filter-by-date" styleClass="col-5">
-		    		<h:outputText value="Filtrar por fecha"/><br/>
-			    	<p:outputLabel for="start-date" value="Inicio" style="display:none;"/><br/>
-	        		<p:datePicker id="start-date" value="#{billManagementBean.startTime}" showIcon="true" placeholder="Inicio"/><br/>
-		    		<p:outputLabel for="end-date" value="Final" style="display:none;"/><br/>
-	        		<p:datePicker id="end-date" value="#{billManagementBean.endTime}" showIcon="true" placeholder="Final"/>
+		    	<h:panelGroup layout="block" id="filter-by-date" styleClass="col-7">
+		    		<div class="row justify-content-center">
+			    		<h:outputText value="Filtrar por fecha" styleClass="col-12 my-f-w"/>
+				    	<p:outputLabel for="start-date" value="Inicio" style="display:none;"/>
+		        		<p:datePicker id="start-date" value="#{billManagementBean.startTime}" showIcon="true" 
+		        		placeholder="Inicio" styleClass="col-5"/>
+			    		<p:outputLabel for="end-date" value="Final" style="display:none;"/>
+		        		<p:datePicker id="end-date" value="#{billManagementBean.endTime}" showIcon="true" 
+		        		placeholder="Final" styleClass="col-5"/>
+	        		</div>
 		    	</h:panelGroup>
-		    	<h:panelGroup layout="block" id="filter" styleClass="col-2">
-	    			<p:commandButton value="Filtrar" update="billhead-list" />
-	    			<p:commandButton value="Limpiar" action="#{billManagementBean.cleanFilter()}" update="filter-list billhead-list"/>
+		    	<h:panelGroup layout="block" id="filter" styleClass="col-2 d-flex">
+		    		<div class="row align-self-center">
+		    			<p:commandButton value="Filtrar" update="billhead-list" />
+		    			<p:commandButton value="Limpiar" action="#{billManagementBean.cleanFilter()}" 
+		    			update="filter-list billhead-list"/>
+	    			</div>
 	    		</h:panelGroup>
 	    	</div>
     	</h:form>
+    	<br/>
+    	<h3>Facturas</h3>
     	<h:panelGroup layout="block" id="bill-list" styleClass="col-12">
 	    	<p:dataTable id="billhead-list" value="#{billManagementBean.billHeadList}" var="bh" style="text-align: center;"
 	    	rows="5" paginator="true" rowsPerPageTemplate="5, 10, 15">
@@ -77,6 +90,7 @@
 		<h:panelGroup layout="block" id="detail-list" styleClass="col-12 text-right">
 			<h:panelGroup layout="block" styleClass="col-12 text-left" 
 			rendered="#{billManagementBean.showDetail}">
+				<br/>
     			<h4>Detalle</h4>
     		</h:panelGroup>
 			<p:commandButton action="#{billManagementBean.hideBillDetail()}" icon="fa fa-close" title="Esconder Detalle"

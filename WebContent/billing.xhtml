@@ -182,42 +182,45 @@
 				    		
 				    		<!-- FILTROS -->
 				    		<div class="p-col-11 p-justify-center" style="text-align:center;">
-				    			<div class="col-6">
-					    			<p:selectOneMenu id="warehouse" value="#{billDetailBean.warehouseId}" panelStyle="width:180px"
-				                         effect="fade" var="w" style="width:90%" filter="true" filterMatchMode="startsWith">
-				                        <f:selectItem itemLabel="Todos" itemValue="0" />	
-							            <c:forEach items="#{billDetailBean.warehouseList}" var="wl" varStatus="loop">
-							            	<f:selectItem itemLabel="#{wl.address}" itemValue="#{wl.id}" />		            
-							            </c:forEach>
-										
-							            <p:column>
-							               <f:facet name="header">
-							                   <h:outputText value="Dirección"/>
-							                </f:facet>
-							                <h:outputText value="#{w}" />
-							            </p:column>
-							            <f:ajax render="product-list-choose"/>
-							        </p:selectOneMenu>
-					            </div>
-					            <div class="col-6">
-					            	<p:selectOneMenu id="category" value="#{billDetailBean.categoryId}" panelStyle="width:180px"
-				                         effect="fade" var="c" style="width:90%" filter="true" filterMatchMode="startsWith">
-				                        <f:selectItem itemLabel="Todos" itemValue="0" />
-							            <c:forEach items="#{billDetailBean.categoryList}" var="cl" varStatus="loop">
-							            	<f:selectItem itemLabel="#{cl.name}" itemValue="#{cl.id}" />		            
-							            </c:forEach>
-							            <p:column>
-							               <f:facet name="header">
-							                   <h:outputText value="Categoría"/>
-							                </f:facet>
-							                <h:outputText value="#{c}" />
-							            </p:column>
-							            <f:ajax render="product-list-choose"/>
-							        </p:selectOneMenu>
-					            </div>
-					            <br/>
-					            <p:commandButton value="Filtrar" styleClass="p-col-2"/>
-				    		</div>
+				    			<div class="row">
+					    			<div class="col-6">
+					    				<p:outputLabel for="warehouse" value="Bodegas:" styleClass="my-f-w"/><br/>
+						    			<p:selectOneMenu id="warehouse" value="#{billDetailBean.warehouseId}" panelStyle="width:180px"
+					                         effect="fade" var="w" style="width:90%" filter="true" filterMatchMode="startsWith">
+					                        <f:selectItem itemLabel="Todos" itemValue="0" />	
+								            <c:forEach items="#{billDetailBean.warehouseList}" var="wl" varStatus="loop">
+								            	<f:selectItem itemLabel="#{wl.address}" itemValue="#{wl.id}" />		            
+								            </c:forEach>
+											
+								            <p:column>
+								               <f:facet name="header">
+								                   <h:outputText value="Dirección"/>
+								                </f:facet>
+								                <h:outputText value="#{w}" />
+								            </p:column>
+								            <f:ajax render="product-list-choose"/>
+								        </p:selectOneMenu>
+						            </div>
+						            <div class="col-6">
+						            	<p:outputLabel for="category" value="Categorías:" styleClass="my-f-w"/><br/>
+						            	<p:selectOneMenu id="category" value="#{billDetailBean.categoryId}" panelStyle="width:180px"
+					                         effect="fade" var="c" style="width:90%" filter="true" filterMatchMode="startsWith">
+					                        <f:selectItem itemLabel="Todos" itemValue="0" />
+								            <c:forEach items="#{billDetailBean.categoryList}" var="cl" varStatus="loop">
+								            	<f:selectItem itemLabel="#{cl.name}" itemValue="#{cl.id}" />		            
+								            </c:forEach>
+								            <p:column>
+								               <f:facet name="header">
+								                   <h:outputText value="Categoría"/>
+								                </f:facet>
+								                <h:outputText value="#{c}" />
+								            </p:column>
+								            <f:ajax render="product-list-choose"/>
+								        </p:selectOneMenu>
+						            </div>
+						            <br/>
+					    		</div>
+					    	</div>
 				    		<!-- /FILTROS -->
 				    		
 							<p:dataGrid id="product-list-choose" var="pw" value="#{billDetailBean.productWarehouseList}" columns="3" layout="grid"
@@ -229,7 +232,7 @@
 				                	<p:panelGrid style="width:100%">
 				                		<p:row>
 					                		<p:column>
-						                    	<h:outputText value="Precio:" />
+						                    	<h:outputText value="Precio:" styleClass="my-f-w"/>
 						                    </p:column>
 						                    <p:column>
 							                    <h:outputText value="#{pw.price}" />
@@ -237,10 +240,26 @@
 					                    </p:row>
 					                    <p:row>
 						                    <p:column>
-							                    <h:outputText value="Stock:" />
+							                    <h:outputText value="Stock:" styleClass="my-f-w"/>
 						                   	</p:column>
 						                   	<p:column>
 							                    <h:outputText value="#{pw.stock}" />
+						                    </p:column>
+					                	</p:row>
+					                	<p:row>
+						                    <p:column>
+							                    <h:outputText value="Categoría:" styleClass="my-f-w"/>
+						                   	</p:column>
+						                   	<p:column>
+							                    <h:outputText value="#{pw.product.category.name}" />
+						                    </p:column>
+					                	</p:row>
+					                	<p:row>
+						                    <p:column>
+							                    <h:outputText value="Bodega:" styleClass="my-f-w"/>
+						                   	</p:column>
+						                   	<p:column>
+							                    <h:outputText value="#{pw.warehouse.address}" />
 						                    </p:column>
 					                	</p:row>
 					                	<p:row>
