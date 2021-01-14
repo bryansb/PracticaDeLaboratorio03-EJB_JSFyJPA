@@ -2,7 +2,6 @@ package ec.edu.ups.controller;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -49,22 +48,8 @@ public class BillHeadBean implements Serializable{
 	
 	@PostConstruct
 	public void init() {
-		User u = new User();
-		try {
-			for (int i = 0; i < 10; i++) {
-				u = new User();
-				u.setName("n " + i);
-				u.setLastname("L " + i);
-				u.setDni("dni" + i);
-				u.setEmail("e" + i + new Date());
-				u.setPassword("");
-				u.setRole('C');
-				ejbUserFacade.create(u);
-			}
-		} catch (Exception e) {
-			
-		}
 		billDetailList = new ArrayList<>();
+		dniUserSearch = "";
 	}
 	
 	public String create() {
@@ -112,7 +97,7 @@ public class BillHeadBean implements Serializable{
 	}
 	
 	public List<User> getUserList() {
-		return ejbUserFacade.findAll();
+		return ejbUserFacade.findUser(dniUserSearch);
 	}
 
 	public User getUser() {

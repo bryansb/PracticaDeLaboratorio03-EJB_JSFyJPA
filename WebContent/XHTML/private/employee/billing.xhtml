@@ -20,8 +20,8 @@
 						<h3>Seleccione un Cliente</h3>
 			    		<div class="p-col-11 p-justify-center" style="text-align:center;">
 			    			<p:outputLabel for="user-dni" style="display:none" value="Cédula:" />
-			            	<p:inputText id="user-dni" placeholder="Cédula" styleClass="p-col-5"/>
-				            <p:commandButton value="Buscar" styleClass="p-col-2"/>
+			            	<p:inputText id="user-dni" value="#{billHeadBean.dniUserSearch}" placeholder="Cédula" styleClass="p-col-5"/>
+				            <p:commandButton value="Buscar" styleClass="p-col-2" update="users"/>
 			    		</div>
 					</h:form>
 					<h:form id="users">
