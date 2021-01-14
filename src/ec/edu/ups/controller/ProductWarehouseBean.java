@@ -7,6 +7,10 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.annotation.FacesConfig;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
 
 import ec.edu.ups.ejb.ProductFacade;
@@ -35,6 +39,7 @@ public class ProductWarehouseBean implements Serializable {
     
     
     private List<ProductWarehouse> productWarehouseList;
+    private List<ProductWarehouse> selectedList;
     private List<Warehouse> warehouseList;
     private List<Product> productList;
     
@@ -51,15 +56,34 @@ public class ProductWarehouseBean implements Serializable {
     
     @PostConstruct
     public void init() {
-	
+	loadProducts();
+	loadProductWarehouses();
+    }
+    
+    public void getProductsByWarehouse() {
+	this.selectedList = this.productWarehouseFacade.findByWarehouseIdAll(this.warehouse.getId());
     }
     
     public void loadProductWarehouses() {
 	this.productWarehouseList = this.productWarehouseFacade.findAll();
     }
     
+    public void loadProducts() {
+	this.productList = this.productFacade.findAll();
+    }
+    
     public String create() {
+	ProductWarehouse productWarehouse = new ProductWarehouse();
+	productWarehouse.setPrice(this.price);
+	productWarehouse.setStock(this.stock);
 	
+	productWarehouse.setProduct(this.product);
+	productWarehouse.setWarehouse(this.warehouse);
+	
+	productWarehouseFacade.create(productWarehouse);
+	
+	loadProductWarehouses();
+	getProductsByWarehouse();
 	return null;
     }
     
@@ -93,6 +117,22 @@ public class ProductWarehouseBean implements Serializable {
 	return null;
     }
     
+    public void validator(FacesContext context, UIComponent componentToValidate, 
+		Object value) {
+	int productId = (int) value;
+	
+	this.product = productFacade.read(productId);
+	
+	boolean condition = this.productWarehouseFacade.isPersisted(this.product.getName(), 
+		this.warehouse.getId());
+
+	if (condition) {
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, 
+				"El producto ya se encuentra agregado", null);
+		throw new ValidatorException(message);
+	}
+    }
+    
     public List<Warehouse> getWarehouseList() {
         return warehouseList;
     }
@@ -118,12 +158,21 @@ public class ProductWarehouseBean implements Serializable {
         this.productWarehouseList = productWarehouseList;
     }
 
+    public List<ProductWarehouse> getSelectedList() {
+        return selectedList;
+    }
+
+    public void setSelectedList(List<ProductWarehouse> selectedList) {
+        this.selectedList = selectedList;
+    }
+
     public Warehouse getWarehouse() {
         return warehouse;
     }
     
     public void setWarehouse(Warehouse warehouse) {
         this.warehouse = warehouse;
+        getProductsByWarehouse();
     }
     
     public Product getProduct() {

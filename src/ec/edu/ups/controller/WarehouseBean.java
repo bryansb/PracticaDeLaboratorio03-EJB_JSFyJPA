@@ -11,8 +11,10 @@ import javax.faces.annotation.FacesConfig;
 import javax.inject.Named;
 
 import ec.edu.ups.ejb.CityFacade;
+import ec.edu.ups.ejb.ProductFacade;
 import ec.edu.ups.ejb.WarehouseFacade;
 import ec.edu.ups.entities.City;
+import ec.edu.ups.entities.Product;
 import ec.edu.ups.entities.ProductWarehouse;
 import ec.edu.ups.entities.Warehouse;
 
@@ -28,11 +30,17 @@ public class WarehouseBean implements Serializable {
 
     @EJB
     private CityFacade cityFacade;
+    
+    @EJB
+    private ProductFacade productFacade;
 
     private List<City> cityList;
+    private List<Product> productList;
     private List<Warehouse> warehouseList;
     private List<ProductWarehouse> productWarehouseList;
     
+    
+    private Warehouse selectedWarehouse;
     private City city;
     private String address;
     
@@ -48,7 +56,13 @@ public class WarehouseBean implements Serializable {
 	//addCities();
 	
     	loadCities();
-    	loadWarehouses();  
+    	loadWarehouses();
+    	loadProducts();
+	
+    }
+
+    private void loadProducts() {
+	this.productList = this.productFacade.findAll();
 	
     }
 
@@ -91,6 +105,13 @@ public class WarehouseBean implements Serializable {
 	warehouseFacade.update(warehouse);
 	loadWarehouses();
 	return null;
+    }
+    
+    public void manageWarehouse(Warehouse warehouse) {
+	warehouse.setSelected(true);
+	warehouseFacade.update(warehouse);
+	this.selectedWarehouse = warehouse;
+	loadWarehouses();
     }
     
     public void loadCities() {
@@ -160,12 +181,28 @@ public class WarehouseBean implements Serializable {
 	this.cityList = cityList;
     }
 
+    public List<Product> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
+    }
+
     public int getIndex() {
         return index;
     }
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public Warehouse getSelectedWarehouse() {
+        return selectedWarehouse;
+    }
+
+    public void setSelectedWarehouse(Warehouse selectedWarehouse) {
+        this.selectedWarehouse = selectedWarehouse;
     }
 
 }

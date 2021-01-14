@@ -39,6 +39,9 @@ public class Warehouse implements Serializable {
 	
 	@Transient
 	private boolean editable;
+	
+	@Transient
+	private boolean selected;
 
 	@ManyToOne
 	@JoinColumn
@@ -110,6 +113,14 @@ public class Warehouse implements Serializable {
 
 	public void setEditable(boolean editable) {
 	    this.editable = editable;
+	}
+
+	public boolean isSelected() {
+	    return selected;
+	}
+
+	public void setSelected(boolean selected) {
+	    this.selected = selected;
 	}
 
 	@Override
