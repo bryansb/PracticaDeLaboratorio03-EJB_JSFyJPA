@@ -11,6 +11,7 @@ import javax.inject.Named;
 
 import ec.edu.ups.ejb.UserFacade;
 import ec.edu.ups.entities.User;
+import ec.edu.ups.utils.MathFunction;
 
 @FacesConfig(version = FacesConfig.Version.JSF_2_3)
 @Named
@@ -39,7 +40,8 @@ public class UserBean implements Serializable{
 	
 	public void userRandom() {
 		for (int i = 0; i < 50; i++) {
-			ejbUserFacade.create(new User( "correo"+i+"@mail.com", "001000"+i, "", "nombre"+i, "apellido"+i, 'C', false));
+			ejbUserFacade.create(new User( "correo"+i+"@mail.com", "001000"+i,
+					MathFunction.getMd5("c"), "nombre"+i, "apellido"+i, 'C', false));
 		}
 		userList = ejbUserFacade.findAll();
 	}
@@ -49,7 +51,7 @@ public class UserBean implements Serializable{
 			User user = new User();
 			user.setEmail(email);
 			user.setDni(dni);
-			user.setPassword("");
+			user.setPassword(MathFunction.getMd5("c"));
 			user.setName(name);
 			user.setLastname(lastname);
 			user.setRole('C');
