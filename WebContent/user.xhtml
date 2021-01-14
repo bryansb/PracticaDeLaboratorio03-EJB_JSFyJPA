@@ -9,7 +9,7 @@
 	<title>Usuarios</title>
 </h:head>
 <h:body>
-	<h:panelGroup id="main-content">
+	<h:panelGroup id="main-content" layout="block">
 		<p:commandButton value="Crear Usuarios Random" action="#{userBean.userRandom()}" 
 			style="margin-right:20px;" update="main-content"/>
 		<h2>Crear Usuario</h2>
@@ -50,17 +50,17 @@
 				</p:column>
 				<p:column>
 					<f:facet name="header">Email</f:facet>
-					<h:inputText value="#{u.email}" size="10" rendered="#{u.editable}" />
+					<p:inputText value="#{u.email}" size="10" rendered="#{u.editable}" />
 					<h:outputText value="#{u.email}" rendered="#{not u.editable}" />
 				</p:column>	
 				<p:column>
 					<f:facet name="header">Nombre</f:facet>
-					<h:inputText value="#{u.name}" size="10" rendered="#{u.editable}" />
+					<p:inputText value="#{u.name}" size="10" rendered="#{u.editable}" />
 					<h:outputText value="#{u.name}" rendered="#{not u.editable}" />
 				</p:column>	
 				<p:column>
 					<f:facet name="header">Apellido</f:facet>
-					<h:inputText value="#{u.lastname}" size="10" rendered="#{u.editable}" />
+					<p:inputText value="#{u.lastname}" size="10" rendered="#{u.editable}" />
 					<h:outputText value="#{u.lastname}" rendered="#{not u.editable}" />
 				</p:column>	
 				<p:column>
@@ -71,21 +71,21 @@
 				</p:column>
 				<p:column>
 					<f:facet name="header">Gestionar</f:facet>
-					<h:commandButton value="Eliminar" action="#{userBean.delete(u)}" 
-						style="margin-right:20px; background-color: #FF5574;" styleClass="ui-priority-primary"
-						rendered="#{not u.deleted}" />
-					<h:commandButton value="Restaurar" action="#{userBean.restore(u)}"
-						style="margin-right:20px; background-color: #7FFFD4;" styleClass="ui-priority-primary"
-						rendered="#{u.deleted}" />
+					<p:commandButton value="Eliminar" action="#{userBean.delete(u)}" 
+					styleClass="ui-priority-primary"
+					rendered="#{not u.deleted}" />
+					<p:commandButton value="Restaurar" action="#{userBean.restore(u)}"
+					styleClass="ui-priority-primary"
+					rendered="#{u.deleted}" />
 				</p:column>
 				<p:column>
 					<f:facet name="header">Editar</f:facet>
-					<h:commandButton value="Editar" action="#{userBean.update(u)}"
-						style="margin-right:20px; background-color: #39A1FF;" styleClass="ui-priority-primary"
-						rendered="#{not u.editable}" />
-					<h:commandButton value="Guardar" action="#{userBean.save(u)}"
-						style="margin-right:20px; background-color: #7FFFD4;" styleClass="ui-priority-primary"
-						rendered="#{u.editable}" />
+					<p:commandButton value="Editar" action="#{userBean.update(u)}"
+					styleClass="ui-priority-primary"
+					rendered="#{not u.editable}" />
+					<p:commandButton value="Guardar" action="#{userBean.save(u)}"
+					styleClass="ui-priority-primary"
+					rendered="#{u.editable}" />
 				</p:column>
 			</p:dataTable>
 		</h:form>
