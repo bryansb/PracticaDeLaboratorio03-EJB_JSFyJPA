@@ -35,6 +35,13 @@ public class ProductWarehouseFacade extends AbstractFacade<ProductWarehouse> {
 		return super.findByPath(attributes, values, order, 0, 0, true, false);
 	}
 	
+	public List<ProductWarehouse> findByWarehouseIdAll(int warehouseId) {
+		String[][] attributes = {{"warehouse", "id"}};
+		String[] values = {"equal&" + warehouseId};
+		String[] order = {"product", "name"};
+		return super.findByPath(attributes, values, order, 0, 0, true, false);
+	}
+	
 	public List<ProductWarehouse> findByCategoryId(int categoryId) {
 		String[][] attributes = {{"product", "category", "id"}, {"deleted"}};
 		String[] values = {"equal&" + categoryId, "equal&0"};
@@ -47,6 +54,27 @@ public class ProductWarehouseFacade extends AbstractFacade<ProductWarehouse> {
 		String[] values = {"equal&" + categoryId, "equal&" + warehouseId, "equal&0"};
 		String[] order = {"product", "name"};
 		return super.findByPath(attributes, values, order, 0, 0, true, false);
+	}
+	
+	public List<ProductWarehouse> findProductWarehouseByProductName(String name) {
+	    String[][] attributes = {{"product", "name"}, {"deleted"}};
+	    String[] values = {"equal&" + name, "equal&0"};
+	    String[] order = {"product", "name"};
+	    return super.findByPath(attributes, values, order, 0, 0, true, false);
+	}
+	
+	public boolean isPersisted(String name, int id) {
+	    
+	    List<ProductWarehouse> productsWarehouse;
+	    String[][] attributes = {{"product", "name"}, {"warehouse", "id"}};
+	    String[] values = {"equal&" + name, "equal&" + id};
+	    productsWarehouse = super.findByPath(attributes, values, null, 0, 0, true, false);
+	    
+	    if(productsWarehouse == null || productsWarehouse.isEmpty()) {
+		return false;
+	    }
+	    
+	    return true;
 	}
 
 }
