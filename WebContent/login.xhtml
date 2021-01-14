@@ -11,16 +11,18 @@
 <h:body>
 	<h:panelGroup id="main-content">
 		<h:form>
+			<p:messages>
+				<p:autoUpdate/>
+			</p:messages>
 	        <p:outputLabel for="email" style="width:100px" value="Email" />
 	        <p:inputText id="email" value="#{loginBean.email}" required="true"/>
-	        <p:message for="email" display="Email" />
 	        <br/>
-			<h:outputText for="password" value="Password" />
+			<p:outputLabel for="password" value="Password" />
 	        <p:password id="password" value="#{loginBean.password}" feedback="false" />
 	     	<p:message for="password" display="Password" />
 	     	<br/>
-	     	<p:commandButton value="Save" update="main-content" action="#{loginBean.validate()}"
-	     	 icon="pi pi-check" required="true"/>
+	     	<p:commandButton value="Save" update="main-content" action="#{loginBean.login()}"
+	     	 icon="fa fa-check" required="true" binding="#{loginBean.mybutton}"/>
 		</h:form>
      </h:panelGroup> 
 </h:body>

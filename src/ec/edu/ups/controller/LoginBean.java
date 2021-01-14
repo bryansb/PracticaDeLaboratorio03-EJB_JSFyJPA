@@ -1,21 +1,22 @@
 package ec.edu.ups.controller;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.annotation.FacesConfig;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import ec.edu.ups.ejb.UserFacade;
 import ec.edu.ups.entities.User;
-import ec.edu.ups.utils.MathFunction;
 
 @FacesConfig(version = FacesConfig.Version.JSF_2_3)
 @Named
-@SessionScoped
+@RequestScoped
 public class LoginBean implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -25,7 +26,8 @@ public class LoginBean implements Serializable{
 		
 	private String email;
 	private String password;
-	private List<User> userList;
+	
+	private UIComponent mybutton;
 	
 	public LoginBean() {
 		super();
@@ -33,21 +35,25 @@ public class LoginBean implements Serializable{
 	
 	@PostConstruct
 	public void init() {
-		userList = ejbUserFacade.findAll();
 	}
 	
-	public String validate() {
-		
-		String password = MathFunction.getMd5(this.password);
-		
-		for (User user : userList) {
-			if (user.getEmail().equals(email) && 
-					user.getPassword().equals(password)) {
-				
-				return "Success";
-			}
+	public String login() {
+		User user = ejbUserFacade.login(email, password);
+		if (user == null) {
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+					"No se encuentra registrado", null);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(mybutton.getClientId(context), message);
+            return "login";
 		}
-		return "Error";
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", user);
+		return "index";
+	}
+	
+	public String logout() {
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", null);
+		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+		return "index";
 	}
 
 	public UserFacade getEjbUserFacade() {
@@ -74,12 +80,12 @@ public class LoginBean implements Serializable{
 		this.password = password;
 	}
 
-	public List<User> getUserList() {
-		return userList;
+	public UIComponent getMybutton() {
+		return mybutton;
 	}
 
-	public void setUserList(List<User> userList) {
-		this.userList = userList;
+	public void setMybutton(UIComponent mybutton) {
+		this.mybutton = mybutton;
 	}
 	
 }
