@@ -130,7 +130,7 @@
    			</h:form>
    			
    			<h:form rendered="#{warehouseBean.selectedWarehouse.selected}">
-   				<p:dataTable value="#{productWarehouseBean.selectedList}" var="swp"
+   				<p:dataTable id="productsWarehouse" value="#{productWarehouseBean.selectedList}" var="swp"
    					rows="5" paginator="true" rowsPerPageTemplate="5, 10, 15">
     				<p:column>
 						<f:facet name="header">Producto</f:facet>
@@ -138,15 +138,27 @@
 					</p:column>
 					<p:column>
 						<f:facet name="header">Precio</f:facet>
-						#{swp.price}
+						<p:spinner value="#{swp.price}" rendered="#{swp.editable}"
+							min="0.0" max="9999.99" rotate="true" stepFactor="0.25"/>
+						<p:outputLabel value="#{swp.price}" rendered="#{not swp.editable}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">Stock</f:facet>
-						#{swp.stock}
+						<p:spinner value="#{swp.stock}" rendered="#{swp.editable}" 
+							min="0" max="9999" rotate="true" />
+						<p:outputLabel value="#{swp.stock}" rendered="#{not swp.editable}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header">Acciones</f:facet>
-						
+						<p:commandButton value="Editar" action="#{productWarehouseBean.edit(swp)}"
+							rendered="#{not swp.editable and not swp.deleted}" update="productsWarehouse"/>
+						<p:commandButton value="Guardar" action="#{productWarehouseBean.save(swp)}"
+							rendered="#{swp.editable and not swp.deleted}" update="productsWarehouse"/>
+							
+						<p:commandButton value="Eliminar" action="#{productWarehouseBean.delete(swp)}"
+							rendered="#{swp.editable and not swp.deleted}" update="productsWarehouse"/>
+						<p:commandButton value="Restaurar" action="#{productWarehouseBean.restore(swp)}"
+							rendered="#{not swp.editable and swp.deleted}" update="productsWarehouse"/>
 					</p:column>
 				</p:dataTable>
    			</h:form>

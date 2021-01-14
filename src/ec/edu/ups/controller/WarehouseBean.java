@@ -30,7 +30,7 @@ public class WarehouseBean implements Serializable {
 
     @EJB
     private CityFacade cityFacade;
-    
+
     @EJB
     private ProductFacade productFacade;
 
@@ -38,12 +38,11 @@ public class WarehouseBean implements Serializable {
     private List<Product> productList;
     private List<Warehouse> warehouseList;
     private List<ProductWarehouse> productWarehouseList;
-    
-    
+
     private Warehouse selectedWarehouse;
     private City city;
     private String address;
-    
+
     private int index;
 
     public WarehouseBean() {
@@ -52,18 +51,18 @@ public class WarehouseBean implements Serializable {
 
     @PostConstruct
     public void init() {
-	
-	//addCities();
-	
-    	loadCities();
-    	loadWarehouses();
-    	loadProducts();
-	
+
+	// addCities();
+
+	loadCities();
+	loadWarehouses();
+	loadProducts();
+
     }
 
     private void loadProducts() {
 	this.productList = this.productFacade.findAll();
-	
+
     }
 
     public String create() {
@@ -71,7 +70,7 @@ public class WarehouseBean implements Serializable {
 	warehouse.setAddress(this.address);
 	this.city = cityFacade.read(index);
 	warehouse.setCity(this.city);
-	
+
 	warehouseFacade.create(warehouse);
 	loadWarehouses();
 	return null;
@@ -99,21 +98,21 @@ public class WarehouseBean implements Serializable {
 	loadWarehouses();
 	return null;
     }
-    
+
     public String restore(Warehouse warehouse) {
 	warehouse.setDeleted(false);
 	warehouseFacade.update(warehouse);
 	loadWarehouses();
 	return null;
     }
-    
+
     public void manageWarehouse(Warehouse warehouse) {
 	warehouse.setSelected(true);
 	warehouseFacade.update(warehouse);
 	this.selectedWarehouse = warehouse;
 	loadWarehouses();
     }
-    
+
     public void loadCities() {
 	this.cityList = cityFacade.findAll();
     }
@@ -121,7 +120,7 @@ public class WarehouseBean implements Serializable {
     public void loadWarehouses() {
 	this.warehouseList = this.warehouseFacade.findAll();
     }
-    
+
     public void addCities() {
 	List<String> cities = new ArrayList<>();
 	cities.add("Macas");
@@ -132,20 +131,20 @@ public class WarehouseBean implements Serializable {
 	cities.add("Tena");
 	cities.add("Paute");
 	cities.add("Cuenca");
-	
+
 	for (String string : cities) {
-	    City city= new City();
+	    City city = new City();
 	    city.setName(string);
 	    this.cityFacade.create(city);
 	}
     }
 
     public List<Warehouse> getWarehouseList() {
-        return warehouseList;
+	return warehouseList;
     }
 
     public void setWarehouseList(List<Warehouse> warehouseList) {
-        this.warehouseList = warehouseList;
+	this.warehouseList = warehouseList;
     }
 
     public City getCity() {
@@ -176,33 +175,33 @@ public class WarehouseBean implements Serializable {
     public List<City> getCityList() {
 	return cityList;
     }
-    
+
     public void setCityList(List<City> cityList) {
 	this.cityList = cityList;
     }
 
     public List<Product> getProductList() {
-        return productList;
+	return productList;
     }
 
     public void setProductList(List<Product> productList) {
-        this.productList = productList;
+	this.productList = productList;
     }
 
     public int getIndex() {
-        return index;
+	return index;
     }
 
     public void setIndex(int index) {
-        this.index = index;
+	this.index = index;
     }
 
     public Warehouse getSelectedWarehouse() {
-        return selectedWarehouse;
+	return selectedWarehouse;
     }
 
     public void setSelectedWarehouse(Warehouse selectedWarehouse) {
-        this.selectedWarehouse = selectedWarehouse;
+	this.selectedWarehouse = selectedWarehouse;
     }
 
 }

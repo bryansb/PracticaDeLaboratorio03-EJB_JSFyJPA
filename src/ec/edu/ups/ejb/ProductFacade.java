@@ -9,16 +9,16 @@ import ec.edu.ups.entities.Product;
 @Stateless
 public class ProductFacade extends AbstractFacade<Product> {
 
-	@PersistenceContext(unitName = "Practica03")
+    @PersistenceContext(unitName = "Practica03")
     private EntityManager em;
-	
+
     public ProductFacade() {
-    	super(Product.class);
+	super(Product.class);
     }
 
-	@Override
-	protected EntityManager getEntityManager() {
-		return em;
-	}
-	
+    @Override
+    protected EntityManager getEntityManager() {
+	return em;
+    }
+
 }
