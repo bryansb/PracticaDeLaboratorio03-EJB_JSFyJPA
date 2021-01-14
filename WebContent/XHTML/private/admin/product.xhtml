@@ -24,7 +24,7 @@
 					<h3>Crear Productos</h3>
 					<div class="row m-4">
 						<div class="col-lg-4 col-md-12">
-			    			<p:outputLabel for="product-category" value="Categoría:" />
+			    			<p:outputLabel for="product-category" value="Categoría:" /><br/>
 			            	<p:selectOneMenu id="product-category" value="#{productBean.index}" panelStyle="width:180px"
 		                         effect="fade" var="p" style="width:160px" filter="true" filterMatchMode="startsWith">
 		                         
@@ -41,7 +41,7 @@
 					        </p:selectOneMenu>
 				        </div>
 				        <div class="col-lg-4 col-md-12">
-							<p:outputLabel for="product-name" value="Nombre:" />
+							<p:outputLabel for="product-name" value="Nombre:" /><br/>
 							<p:inputText id="product-name" value="#{productBean.name}" />
 						</div>
 						<div class="col-lg-4 col-md-12">

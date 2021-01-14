@@ -10,9 +10,9 @@
 	    <h:form>
 		    <p:growl id="messages"/>
 			<p:menubar>
-			    <p:menuitem value="Inicio" url="index.jsf"/>
+			    <p:menuitem value="Inicio" url="/Practica03/index.jsf"/>
 			    <f:facet name="options">
-			        <p:commandButton value="Iniciar Sesión" action="login?faces-redirect=true"
+			        <p:commandButton value="Iniciar Sesión" action="/XHTML/public/login?faces-redirect=true"
 			        icon="fa fa-sign-in" rendered="#{user == null}"/>
 			        <p:commandButton value="Cerrar Sesión" action="#{loginBean.logout()}" ajax="false"
 			        icon="fa fa-close" rendered="#{user != null}"/>

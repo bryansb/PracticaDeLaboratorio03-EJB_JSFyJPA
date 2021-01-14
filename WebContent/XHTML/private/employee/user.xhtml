@@ -79,77 +79,61 @@
 						<p:column>
 							<f:facet name="header">Eliminado</f:facet>#{u.deleted}
 						</p:column>
-						<p:column>
-							<f:facet name="header">Gestionar</f:facet>
-							<p:commandButton value="Eliminar" action="#{userBean.delete(u)}" 
-							styleClass="ui-priority-primary"
-							rendered="#{not u.deleted}" />
-							<p:commandButton value="Restaurar" action="#{userBean.restore(u)}"
-							styleClass="ui-priority-primary"
-							rendered="#{u.deleted}" />
-						</p:column>
-						<p:column>
-							<f:facet name="header">Editar</f:facet>
-							<p:commandButton value="Editar" action="#{userBean.update(u)}"
-							styleClass="ui-priority-primary"
-							rendered="#{not u.editable}" />
-							<p:commandButton value="Guardar" action="#{userBean.save(u)}"
-							styleClass="ui-priority-primary"
-							rendered="#{u.editable}" />
-						</p:column>
 			        </p:dataTable>
 			</h:panelGroup>
 			
 		</p:panelGrid>
+		<br/>
+		<br/>
 		<h:panelGroup id="main-content" layout="block" >
 			<h2 style="text-align:center">Lista de Usuarios</h2>
 			<h:form>	        
-				<p:dataTable value="#{userBean.userList}" var="u" style="text-align:center"
+				<p:dataTable value="#{userBean.userList}" var="ul" style="text-align:center"
 				rows="5" paginator="true"
 		        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} 
 		        {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 		        rowsPerPageTemplate="5,10,20">
 					<p:column>
-						<f:facet name="header">DNI</f:facet>#{u.dni}
+						<f:facet name="header">DNI</f:facet>#{ul.dni}
 					</p:column>
 					<p:column>
 						<f:facet name="header">Email</f:facet>
-						<p:inputText value="#{u.email}" size="10" rendered="#{u.editable}" />
-						<h:outputText value="#{u.email}" rendered="#{not u.editable}" />
+						<p:inputText value="#{ul.email}" size="10" rendered="#{ul.editable}" />
+						<h:outputText value="#{ul.email}" rendered="#{not ul.editable}" />
 					</p:column>	
 					<p:column>
 						<f:facet name="header">Nombre</f:facet>
-						<p:inputText value="#{u.name}" size="10" rendered="#{u.editable}" />
-						<h:outputText value="#{u.name}" rendered="#{not u.editable}" />
+						<p:inputText value="#{ul.name}" size="10" rendered="#{ul.editable}" />
+						<h:outputText value="#{ul.name}" rendered="#{not ul.editable}" />
 					</p:column>	
 					<p:column>
 						<f:facet name="header">Apellido</f:facet>
-						<p:inputText value="#{u.lastname}" size="10" rendered="#{u.editable}" />
-						<h:outputText value="#{u.lastname}" rendered="#{not u.editable}" />
+						<p:inputText value="#{ul.lastname}" size="10" rendered="#{ul.editable}" />
+						<h:outputText value="#{ul.lastname}" rendered="#{not ul.editable}" />
 					</p:column>	
 					<p:column>
-						<f:facet name="header">Rol</f:facet>#{u.role}
+						<f:facet name="header">Rol</f:facet>#{ul.role}
 					</p:column>
 					<p:column>
-						<f:facet name="header">Eliminado</f:facet>#{u.deleted}
+						<f:facet name="header">Eliminado</f:facet>#{ul.deleted}
 					</p:column>
 					<p:column>
 						<f:facet name="header">Gestionar</f:facet>
-						<p:commandButton value="Eliminar" action="#{userBean.delete(u)}" 
+						<p:commandButton value="Eliminar" action="#{userBean.delete(ul)}" 
 						styleClass="ui-priority-primary"
-						rendered="#{not u.deleted}" />
-						<p:commandButton value="Restaurar" action="#{userBean.restore(u)}"
+						rendered="#{not ul.deleted}" update="main-content search"/>
+						<p:commandButton value="Restaurar" action="#{userBean.restore(ul)}"
 						styleClass="ui-priority-primary"
-						rendered="#{u.deleted}" />
+						rendered="#{ul.deleted}" update="main-content search"/>
 					</p:column>
 					<p:column>
 						<f:facet name="header">Editar</f:facet>
-						<p:commandButton value="Editar" action="#{userBean.update(u)}"
+						<p:commandButton value="Editar" action="#{userBean.update(ul)}"
 						styleClass="ui-priority-primary"
-						rendered="#{not u.editable}" />
-						<p:commandButton value="Guardar" action="#{userBean.save(u)}"
+						rendered="#{not ul.editable}" update="main-content search"/>
+						<p:commandButton value="Guardar" action="#{userBean.save(ul)}"
 						styleClass="ui-priority-primary"
-						rendered="#{u.editable}" />
+						rendered="#{ul.editable}" update="main-content search"/>
 					</p:column>
 				</p:dataTable>
 			</h:form>

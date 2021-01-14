@@ -17,7 +17,7 @@ xmlns:p="http://primefaces.org/ui">
 		
 		<div class="container text-center col-12">
 	   	<div class="row justify-content-center">
-	    	<div class="p-4 col-xl-3 col-sm-6 col-12">
+	    	<div class="p-4 col-xl-4 col-sm-6 col-12 border rounded mt-4">
 	    		
 	    			<div class="col-12 p-4">
 	    				<h1>Bienvenido</h1>
@@ -34,11 +34,11 @@ xmlns:p="http://primefaces.org/ui">
 								<p:autoUpdate/>
 							</p:messages>
 								<h:panelGrid columns="2" cellpadding="10"> 
-							        <p:outputLabel for="email" value="Email" />
+							        <p:outputLabel for="email" value="Email:" />
 							        <p:inputText id="email" value="#{loginBean.email}" required="true"/>
 						        
-							        <h:outputLabel for="pwd1" value="Password" />
-							        <p:password id="pwd1" value="#{loginBean.password}" match="pwd2" label="Password 1" required="true" />
+							        <h:outputLabel for="pwd1" value="Contraseña:" />
+							        <p:password id="pwd1" value="#{loginBean.password}" label="Password 1" required="true" />
 
 									<a href="/Practica03/index.jsf" class="btn btn-link"><i class="fa fa-home"></i> Inicio</a>
 						     		

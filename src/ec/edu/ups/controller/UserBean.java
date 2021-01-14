@@ -84,7 +84,9 @@ public class UserBean implements Serializable{
 	public String save(User user) {
 		ejbUserFacade.update(user);
 		user.setEditable(false);
-		return "Success";
+		userList = ejbUserFacade.findClients();
+		user = ejbUserFacade.findUserByDNI(dni);
+		return null;
 	}
 	
 	public String delete(User user) {
@@ -92,11 +94,10 @@ public class UserBean implements Serializable{
 			user.setDeleted(true);
 			ejbUserFacade.update(user);
 			userList = ejbUserFacade.findClients();
-			return "Success";
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "Error";
 		}
+		return null;
 	}
 	
 	public String restore(User user) {
@@ -104,11 +105,10 @@ public class UserBean implements Serializable{
 			user.setDeleted(false);
 			ejbUserFacade.update(user);
 			userList = ejbUserFacade.findClients();
-			return "Success";
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "Error";
 		}
+		return null;
 	}
 	
 	public void cleanString() {

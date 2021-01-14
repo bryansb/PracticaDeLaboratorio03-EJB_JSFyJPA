@@ -12,16 +12,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ec.edu.ups.entities.User;
+
 /**
- * Servlet Filter implementation class Login
+ * Servlet Filter implementation class Admin
  */
-@WebFilter("/XHTML/private/*")
-public class Login implements Filter {
+@WebFilter("/XHTML/private/admin/*")
+public class Admin implements Filter {
 
     /**
      * Default constructor. 
      */
-    public Login() {
+    public Admin() {
         // TODO Auto-generated constructor stub
     }
 
@@ -35,21 +37,31 @@ public class Login implements Filter {
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) 
-			throws IOException, ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		boolean sesion;
 		HttpServletRequest httpReq = (HttpServletRequest) request;
 		HttpServletResponse httpResp = (HttpServletResponse) response;
+		HttpSession session =  httpReq.getSession(false);
+
 		try {
-			HttpSession session =  httpReq.getSession(false);
+			User user = (User)session.getAttribute("user");
+			
 			sesion = session == null ? false : (Boolean) session.getAttribute("isLogged");
+			
 			if (sesion) {
-				chain.doFilter(request, response);
+				if (user.getRole() == 'A') {
+					chain.doFilter(request, response);
+				}else {
+					session.setAttribute("user", null);
+					session.invalidate();
+					httpResp.sendRedirect("/Practica03/index.jsf");
+				}
 			}else {
 				session.setAttribute("user", null);
 				session.invalidate();
 				httpResp.sendRedirect("/Practica03/index.jsf");
 			}
+			
 		} catch (Exception e) {
 			httpResp.sendRedirect("/Practica03/index.jsf");
 		}

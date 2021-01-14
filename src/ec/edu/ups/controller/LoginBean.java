@@ -47,13 +47,15 @@ public class LoginBean implements Serializable{
             return "login";
 		}
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", user);
-		return "index";
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isLogged", true);
+		return "home";
 	}
 	
 	public String logout() {
+		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isLogged", false);
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", null);
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-		return "index";
+		return "home";
 	}
 
 	public UserFacade getEjbUserFacade() {
