@@ -30,47 +30,48 @@ public class MathFunction {
 	}
 	
 	
-	private static boolean stringLength(String string, int length) {
-        if (string.length() == length)
-            return true;
-        return false;
-    }
+	public static boolean validateDNI(String dni) {
+		boolean cedulaCorrecta = false;
 
-    private static byte sumDigits(byte[] digits) {
-        byte verifier;
-        byte sum = 0;
-        for (byte i = 0; i < digits.length; i = (byte) (i + 2)) {
-            verifier = (byte) (digits[i] * 2);
-            if (verifier > 9)
-                verifier = (byte) (verifier - 9);
-            sum = (byte) (sum + verifier);
-        }
-        for (byte i = 1; i < digits.length; i = (byte) (i + 2)) {
-            verifier = (byte) (digits[i] * 1);
-            sum = (byte) (sum + verifier);
-        }
-        return (byte) ((sum - (sum % 10) + 10) - sum);
-    }
+		try {
 
-    public static boolean validateDni(String idCard) {
-        try {
-            if (stringLength(idCard, 10)) {
-                String[] data = idCard.split("");
-                byte verifier = Byte.parseByte(data[0] + data[1]);
-                byte[] digits = new byte[9];
-                for (byte i = 0; i < 9; i++)
-                    digits[i] = Byte.parseByte(data[i]);        
-                if (verifier >= 1 && verifier <= 24) {
-                    verifier = digits[2];
-                    if (verifier <= 6) {
-                        if (sumDigits(digits) == Byte.parseByte(data[9]))
-                            return true;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+		if (dni.length() == 10) // ConstantesApp.LongitudCedula
+		{
+		int tercerDigito = Integer.parseInt(dni.substring(2, 3));
+		if (tercerDigito < 6) {
+		// Coeficientes de validación cédula
+		// El decimo digito se lo considera dígito verificador
+		 int[] coefValCedula = { 2, 1, 2, 1, 2, 1, 2, 1, 2 };
+		 int verificador = Integer.parseInt(dni.substring(9,10));
+		 int suma = 0;
+		 int digito = 0;
+		for (int i = 0; i < (dni.length() - 1); i++) {
+		 digito = Integer.parseInt(dni.substring(i, i + 1))* coefValCedula[i];
+		 suma += ((digito % 10) + (digito / 10));
+		}
+
+		if ((suma % 10 == 0) && (suma % 10 == verificador)) {
+			cedulaCorrecta = true;
+		}
+		else if ((10 - (suma % 10)) == verificador) {
+			cedulaCorrecta = true;
+		} else {
+			cedulaCorrecta = false;
+		}
+		} else {
+			cedulaCorrecta = false;
+		}
+		} else {
+			cedulaCorrecta = false;
+		}
+		} catch (NumberFormatException nfe) {
+			cedulaCorrecta = false;
+		} catch (Exception err) {
+			cedulaCorrecta = false;
+		}
+
+		if (!cedulaCorrecta) {
+		}
+		return cedulaCorrecta;
+		}
 }

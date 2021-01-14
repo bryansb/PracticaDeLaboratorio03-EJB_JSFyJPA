@@ -7,6 +7,10 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.annotation.FacesConfig;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Named;
 
 import ec.edu.ups.ejb.UserFacade;
@@ -27,6 +31,7 @@ public class UserBean implements Serializable{
 	private String dni;
 	private String name;
 	private String lastname;
+	private User user;
 	private List<User> userList;
 	
 	public UserBean() {
@@ -35,15 +40,18 @@ public class UserBean implements Serializable{
 	
 	@PostConstruct
 	public void init() {
-		userList = ejbUserFacade.findAll();
+		userList = ejbUserFacade.findClients();
 	}
 	
-	public void userRandom() {
-		for (int i = 0; i < 50; i++) {
-			ejbUserFacade.create(new User( "correo"+i+"@mail.com", "001000"+i,
-					MathFunction.getMd5("c"), "nombre"+i, "apellido"+i, 'C', false));
+	public void searchUser() {
+		user = ejbUserFacade.findUserByDNI(dni);
+		if (user == null) {
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+					"No se encuentra el usuario", null);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage("msg2", message);
 		}
-		userList = ejbUserFacade.findAll();
+		cleanString();
 	}
 	
 	public String create() {
@@ -56,13 +64,15 @@ public class UserBean implements Serializable{
 			user.setLastname(lastname);
 			user.setRole('C');
 			ejbUserFacade.create(user);
-			userList = ejbUserFacade.findAll();
+			userList = ejbUserFacade.findClients();
 			cleanString();
-			return "Success";
 		} catch (Exception e) {
-			e.printStackTrace();
-			return "Error";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+					"Ya existe DNI o Email", null);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage("msg1", message);
 		}
+		return null;
 	}
 	
 	public String update(User user) {
@@ -81,7 +91,7 @@ public class UserBean implements Serializable{
 		try {
 			user.setDeleted(true);
 			ejbUserFacade.update(user);
-			userList = ejbUserFacade.findAll();
+			userList = ejbUserFacade.findClients();
 			return "Success";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -93,7 +103,7 @@ public class UserBean implements Serializable{
 		try {
 			user.setDeleted(false);
 			ejbUserFacade.update(user);
-			userList = ejbUserFacade.findAll();
+			userList = ejbUserFacade.findClients();
 			return "Success";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -106,6 +116,16 @@ public class UserBean implements Serializable{
 		dni = "";
 		name = "";
 		lastname = "";
+	}
+	
+	public void validateDNI(FacesContext context, UIComponent componentToValidate, 
+			Object value) {
+		String dni = (String) value;
+		if (!MathFunction.validateDNI(dni)) {
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+					"Cédula incorrecta", null);
+			throw new ValidatorException(message);
+		}
 	}
 
 	public String getEmail() {
@@ -140,6 +160,14 @@ public class UserBean implements Serializable{
 		this.lastname = lastname;
 	}
 	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public List<User> getUserList() {
 		return userList;
 	}
