@@ -1,94 +1,158 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition template="/WEB-INF/templates/common.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui">
-<h:head>
-	<title>Usuarios</title>
-</h:head>
-<h:body>
-	<h:panelGroup id="main-content" layout="block">
-		<p:commandButton value="Crear Usuarios Random" action="#{userBean.userRandom()}" 
-			style="margin-right:20px;" update="main-content"/>
-		<h2>Crear Usuario</h2>
-		<h:form>
-			<h3>DNI</h3>
-			<span class="ui-float-label">
-				<p:inputText id="dni" value="#{userBean.dni}" maxlength="10" />
-				<p:outputLabel for="dni" value="DNI" />
-			</span>
-			<h3>Email</h3>
-			<span class="ui-float-label">
-				<p:inputText id="email" value="#{userBean.email}" />
-				<p:outputLabel for="email" value="Email" />
-			</span>
-			<h3>Nombre</h3>
-			<span class="ui-float-label">
-				<p:inputText id="name" value="#{userBean.name}" />
-				<p:outputLabel for="name" value="Nombre" />
-			</span>
-			<h3>Apellido</h3>
-			<span class="ui-float-label">
-				<p:inputText id="lastname" value="#{userBean.lastname}" />
-				<p:outputLabel for="lastname" value="Apellido" />
-			</span>
-		    <p:commandButton value="Crear" id="save" action="#{userBean.create()}"
-		    	update="main-content" style="margin-right:20px;" />
-		</h:form>
-		
-		<h2>Listar Usuarios</h2>
-		<h:form>	        
-			<p:dataTable value="#{userBean.userList}" var="u" style="text-align:center"
-			rows="5" paginator="true"
-	        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} 
-	        {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-	        rowsPerPageTemplate="5,10,20">
-				<p:column>
-					<f:facet name="header">DNI</f:facet>#{u.dni}
-				</p:column>
-				<p:column>
-					<f:facet name="header">Email</f:facet>
-					<p:inputText value="#{u.email}" size="10" rendered="#{u.editable}" />
-					<h:outputText value="#{u.email}" rendered="#{not u.editable}" />
-				</p:column>	
-				<p:column>
-					<f:facet name="header">Nombre</f:facet>
-					<p:inputText value="#{u.name}" size="10" rendered="#{u.editable}" />
-					<h:outputText value="#{u.name}" rendered="#{not u.editable}" />
-				</p:column>	
-				<p:column>
-					<f:facet name="header">Apellido</f:facet>
-					<p:inputText value="#{u.lastname}" size="10" rendered="#{u.editable}" />
-					<h:outputText value="#{u.lastname}" rendered="#{not u.editable}" />
-				</p:column>	
-				<p:column>
-					<f:facet name="header">Rol</f:facet>#{u.role}
-				</p:column>
-				<p:column>
-					<f:facet name="header">Eliminado</f:facet>#{u.deleted}
-				</p:column>
-				<p:column>
-					<f:facet name="header">Gestionar</f:facet>
-					<p:commandButton value="Eliminar" action="#{userBean.delete(u)}" 
-					styleClass="ui-priority-primary"
-					rendered="#{not u.deleted}" />
-					<p:commandButton value="Restaurar" action="#{userBean.restore(u)}"
-					styleClass="ui-priority-primary"
-					rendered="#{u.deleted}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header">Editar</f:facet>
-					<p:commandButton value="Editar" action="#{userBean.update(u)}"
-					styleClass="ui-priority-primary"
-					rendered="#{not u.editable}" />
-					<p:commandButton value="Guardar" action="#{userBean.save(u)}"
-					styleClass="ui-priority-primary"
-					rendered="#{u.editable}" />
-				</p:column>
-			</p:dataTable>
-		</h:form>
-	</h:panelGroup>
-</h:body>
-</html>
+    
+	<ui:define name="title">Usario</ui:define>
+	
+	<ui:define name="body-content">
+		<p:panelGrid columns="1" layout="grid" styleClass="showcase-text-align-center">
+			<h:form id="create-user">
+				<h2 style="text-align:center">Crear Usuario</h2>
+				<p:messages id="msg1"/>
+				<br/>
+				<span class="ui-float-label">
+					<p:inputText id="dni" value="#{userBean.dni}" maxlength="10" required="true"
+					validator="#{userBean.validateDNI}"/>
+					<p:outputLabel for="dni" value="DNI" />
+				</span>
+				<br/>
+				<span class="ui-float-label">
+					<p:inputText id="email" value="#{userBean.email}" required="true"/>
+					<p:outputLabel for="email" value="Email" />
+				</span>
+				<br/>
+				<span class="ui-float-label">
+					<p:inputText id="name" value="#{userBean.name}" required="true"/>
+					<p:outputLabel for="name" value="Nombre" />
+				</span>
+				<br/>
+				<span class="ui-float-label">
+					<p:inputText id="lastname" value="#{userBean.lastname}" required="true"/>
+					<p:outputLabel for="lastname" value="Apellido" />
+				</span>
+				<br/>
+			    <p:commandButton value="Crear" id="save" action="#{userBean.create()}"
+			    	update="main-content create-user" style="margin-right:20px;" icon="fa fa-save"/>
+			</h:form>
+
+			<h:panelGroup id="search" layout="block" >
+					<h2 style="text-align:center">Buscar Usuario</h2>
+					<h:form id="search-user">
+						<p:messages id="msg2"/>
+						<br/>
+			        	<span class="ui-float-label">
+				            <p:inputText id="s" value="#{userBean.dni}"/>
+				            <p:commandButton icon="fa fa-search"  styleClass="white-button"
+				            action="#{userBean.searchUser()}" update="search" />
+				            <p:outputLabel for="s" value="Busqueda por DNI" />
+			            </span>
+					</h:form>
+					<br/>
+					<h4 style="text-align:center">Usuario</h4>
+			        <p:dataTable value="#{userBean.user}" var="u" style="text-align:center">
+			        	<p:column>
+							<f:facet name="header">DNI</f:facet>#{u.dni}
+						</p:column>
+						<p:column>
+							<f:facet name="header">Email</f:facet>
+							<p:inputText value="#{u.email}" size="10" rendered="#{u.editable}" />
+							<h:outputText value="#{u.email}" rendered="#{not u.editable}" />
+						</p:column>	
+						<p:column>
+							<f:facet name="header">Nombre</f:facet>
+							<p:inputText value="#{u.name}" size="10" rendered="#{u.editable}" />
+							<h:outputText value="#{u.name}" rendered="#{not u.editable}" />
+						</p:column>	
+						<p:column>
+							<f:facet name="header">Apellido</f:facet>
+							<p:inputText value="#{u.lastname}" size="10" rendered="#{u.editable}" />
+							<h:outputText value="#{u.lastname}" rendered="#{not u.editable}" />
+						</p:column>	
+						<p:column>
+							<f:facet name="header">Rol</f:facet>#{u.role}
+						</p:column>
+						<p:column>
+							<f:facet name="header">Eliminado</f:facet>#{u.deleted}
+						</p:column>
+						<p:column>
+							<f:facet name="header">Gestionar</f:facet>
+							<p:commandButton value="Eliminar" action="#{userBean.delete(u)}" 
+							styleClass="ui-priority-primary"
+							rendered="#{not u.deleted}" />
+							<p:commandButton value="Restaurar" action="#{userBean.restore(u)}"
+							styleClass="ui-priority-primary"
+							rendered="#{u.deleted}" />
+						</p:column>
+						<p:column>
+							<f:facet name="header">Editar</f:facet>
+							<p:commandButton value="Editar" action="#{userBean.update(u)}"
+							styleClass="ui-priority-primary"
+							rendered="#{not u.editable}" />
+							<p:commandButton value="Guardar" action="#{userBean.save(u)}"
+							styleClass="ui-priority-primary"
+							rendered="#{u.editable}" />
+						</p:column>
+			        </p:dataTable>
+			</h:panelGroup>
+			
+		</p:panelGrid>
+		<h:panelGroup id="main-content" layout="block" >
+			<h2 style="text-align:center">Lista de Usuarios</h2>
+			<h:form>	        
+				<p:dataTable value="#{userBean.userList}" var="u" style="text-align:center"
+				rows="5" paginator="true"
+		        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} 
+		        {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		        rowsPerPageTemplate="5,10,20">
+					<p:column>
+						<f:facet name="header">DNI</f:facet>#{u.dni}
+					</p:column>
+					<p:column>
+						<f:facet name="header">Email</f:facet>
+						<p:inputText value="#{u.email}" size="10" rendered="#{u.editable}" />
+						<h:outputText value="#{u.email}" rendered="#{not u.editable}" />
+					</p:column>	
+					<p:column>
+						<f:facet name="header">Nombre</f:facet>
+						<p:inputText value="#{u.name}" size="10" rendered="#{u.editable}" />
+						<h:outputText value="#{u.name}" rendered="#{not u.editable}" />
+					</p:column>	
+					<p:column>
+						<f:facet name="header">Apellido</f:facet>
+						<p:inputText value="#{u.lastname}" size="10" rendered="#{u.editable}" />
+						<h:outputText value="#{u.lastname}" rendered="#{not u.editable}" />
+					</p:column>	
+					<p:column>
+						<f:facet name="header">Rol</f:facet>#{u.role}
+					</p:column>
+					<p:column>
+						<f:facet name="header">Eliminado</f:facet>#{u.deleted}
+					</p:column>
+					<p:column>
+						<f:facet name="header">Gestionar</f:facet>
+						<p:commandButton value="Eliminar" action="#{userBean.delete(u)}" 
+						styleClass="ui-priority-primary"
+						rendered="#{not u.deleted}" />
+						<p:commandButton value="Restaurar" action="#{userBean.restore(u)}"
+						styleClass="ui-priority-primary"
+						rendered="#{u.deleted}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header">Editar</f:facet>
+						<p:commandButton value="Editar" action="#{userBean.update(u)}"
+						styleClass="ui-priority-primary"
+						rendered="#{not u.editable}" />
+						<p:commandButton value="Guardar" action="#{userBean.save(u)}"
+						styleClass="ui-priority-primary"
+						rendered="#{u.editable}" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>
