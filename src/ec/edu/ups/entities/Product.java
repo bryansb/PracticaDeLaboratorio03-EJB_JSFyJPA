@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Entity implementation class for Entity: Products
@@ -33,6 +34,9 @@ public class Product implements Serializable {
 
 	@Column(name = "pro_name", length = 255, nullable = false)
 	private String name;
+	
+	@Transient
+	private boolean editable;
 
 	@Column(name = "pro_deleted", columnDefinition = "BOOLEAN DEFAULT 0")
 	private boolean deleted;
@@ -86,6 +90,14 @@ public class Product implements Serializable {
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	public boolean isEditable() {
+	    return editable;
+	}
+
+	public void setEditable(boolean editable) {
+	    this.editable = editable;
 	}
 
 	@Override

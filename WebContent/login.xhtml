@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Login</title>
+</h:head>
+<h:body>
+	<h:panelGroup id="main-content">
+		<h:form>
+	        <p:outputLabel for="email" style="width:100px" value="Email" />
+	        <p:inputText id="email" value="#{loginBean.email}" required="true"/>
+	        <p:message for="email" display="Email" />
+	        <br/>
+			<h:outputText for="password" value="Password" />
+	        <p:password id="password" value="#{loginBean.password}" feedback="false" />
+	     	<p:message for="password" display="Password" />
+	     	<br/>
+	     	<p:commandButton value="Save" update="main-content" action="#{loginBean.validate()}"
+	     	 icon="pi pi-check" required="true"/>
+		</h:form>
+     </h:panelGroup> 
+</h:body>
+</html>

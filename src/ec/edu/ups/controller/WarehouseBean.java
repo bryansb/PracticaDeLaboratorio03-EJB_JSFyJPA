@@ -8,12 +8,13 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.annotation.FacesConfig;
-import javax.faces.model.SelectItem;
 import javax.inject.Named;
 
 import ec.edu.ups.ejb.CityFacade;
+import ec.edu.ups.ejb.ProductFacade;
 import ec.edu.ups.ejb.WarehouseFacade;
 import ec.edu.ups.entities.City;
+import ec.edu.ups.entities.Product;
 import ec.edu.ups.entities.ProductWarehouse;
 import ec.edu.ups.entities.Warehouse;
 
@@ -29,12 +30,19 @@ public class WarehouseBean implements Serializable {
 
     @EJB
     private CityFacade cityFacade;
+    
+    @EJB
+    private ProductFacade productFacade;
 
+    private List<City> cityList;
+    private List<Product> productList;
+    private List<Warehouse> warehouseList;
+    private List<ProductWarehouse> productWarehouseList;
+    
+    
+    private Warehouse selectedWarehouse;
     private City city;
     private String address;
-    private List<ProductWarehouse> productWarehouseList;
-    private List<City> cityList;
-    private List<Warehouse> warehouseList;
     
     private int index;
 
@@ -44,21 +52,17 @@ public class WarehouseBean implements Serializable {
 
     @PostConstruct
     public void init() {
-
-//    	for (int i = 0; i < 5; i++) {
-//    	    City city = new City();
-//    	    Warehouse warehouse = new Warehouse();
-//    
-//    	    city.setName("Ciudad" + i);
-//    	    this.cityFacade.create(city);
-//    
-//    	    warehouse.setAddress("Dirección" + i);
-//    	    warehouse.setCity(city);
-//    	    this.warehouseFacade.create(warehouse);
-//    	}
+	
+	//addCities();
 	
     	loadCities();
-	this.warehouseList = this.warehouseFacade.findAll();   
+    	loadWarehouses();
+    	loadProducts();
+	
+    }
+
+    private void loadProducts() {
+	this.productList = this.productFacade.findAll();
 	
     }
 
@@ -69,8 +73,7 @@ public class WarehouseBean implements Serializable {
 	warehouse.setCity(this.city);
 	
 	warehouseFacade.create(warehouse);
-	this.warehouseList = this.warehouseFacade.findAll();  
-	
+	loadWarehouses();
 	return null;
     }
 
@@ -91,13 +94,58 @@ public class WarehouseBean implements Serializable {
     }
 
     public String delete(Warehouse warehouse) {
-	warehouseFacade.delete(warehouse);
-	this.warehouseList = this.warehouseFacade.findAll();
+	warehouse.setDeleted(true);
+	warehouseFacade.update(warehouse);
+	loadWarehouses();
 	return null;
+    }
+    
+    public String restore(Warehouse warehouse) {
+	warehouse.setDeleted(false);
+	warehouseFacade.update(warehouse);
+	loadWarehouses();
+	return null;
+    }
+    
+    public void manageWarehouse(Warehouse warehouse) {
+	warehouse.setSelected(true);
+	warehouseFacade.update(warehouse);
+	this.selectedWarehouse = warehouse;
+	loadWarehouses();
+    }
+    
+    public void loadCities() {
+	this.cityList = cityFacade.findAll();
+    }
+
+    public void loadWarehouses() {
+	this.warehouseList = this.warehouseFacade.findAll();
+    }
+    
+    public void addCities() {
+	List<String> cities = new ArrayList<>();
+	cities.add("Macas");
+	cities.add("Quito");
+	cities.add("Riobamba");
+	cities.add("Ambato");
+	cities.add("Guayaquil");
+	cities.add("Tena");
+	cities.add("Paute");
+	cities.add("Cuenca");
+	
+	for (String string : cities) {
+	    City city= new City();
+	    city.setName(string);
+	    this.cityFacade.create(city);
+	}
     }
 
     public List<Warehouse> getWarehouseList() {
-	return this.warehouseFacade.findAll();
+        return warehouseList;
+    }
+
+    public void setWarehouseList(List<Warehouse> warehouseList) {
+        this.warehouseList = warehouseList;
     }
 
     public City getCity() {
@@ -132,9 +180,13 @@ public class WarehouseBean implements Serializable {
     public void setCityList(List<City> cityList) {
 	this.cityList = cityList;
     }
-    
-    public void loadCities() {
-	this.cityList = cityFacade.findAll();
+
+    public List<Product> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
     }
 
     public int getIndex() {
@@ -143,6 +195,14 @@ public class WarehouseBean implements Serializable {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public Warehouse getSelectedWarehouse() {
+        return selectedWarehouse;
+    }
+
+    public void setSelectedWarehouse(Warehouse selectedWarehouse) {
+        this.selectedWarehouse = selectedWarehouse;
     }
 
 }
