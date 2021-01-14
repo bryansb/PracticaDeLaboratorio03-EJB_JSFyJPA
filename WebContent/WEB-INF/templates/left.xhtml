@@ -5,20 +5,29 @@
      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:p="http://primefaces.org/ui">
 
-	<h:form>
+	<h:form rendered="#{user == null}">
 		<p:menu toggleable="true" style="width:100%">
-			<p:menuitem value="Inicio" action="home" ajax="true"/>
-       		<p:submenu label="Facturación">
-         		<p:menuitem value="Nueva" action="billing" ajax="true"/>
-           		<p:menuitem value="Gestión" action="bill-management" ajax="true"/>
-      		</p:submenu>
-       		<p:submenu label="Clientes">
-           		<p:menuitem value="Gestión" url="http://www.primefaces.org"/>
-       		</p:submenu>
+			<p:menuitem value="Catálogo" action="home" ajax="true"/>
+		</p:menu>
+	</h:form>
+	<h:form rendered="#{user.role == 'A'.charAt(0)}">
+		<p:menu toggleable="true" style="width:100%">
      		<p:submenu label="Bodegas">
            		<p:menuitem value="Inventario" url="http://www.primefaces.org"/>
            		<p:menuitem value="Gestión" url="http://www.primefaces.org"/>
        		</p:submenu>
    		</p:menu>
+	</h:form>
+	<h:form rendered="#{user.role == 'E'.charAt(0)}">
+		<p:menu toggleable="true" style="width:100%">
+			<p:menuitem value="Inicio" action="home" ajax="true"/>
+	       		<p:submenu label="Facturación">
+	         		<p:menuitem value="Nueva" action="billing" ajax="true"/>
+	           		<p:menuitem value="Gestión" action="bill-management" ajax="true"/>
+	      		</p:submenu>
+	       		<p:submenu label="Clientes">
+	           		<p:menuitem value="Gestión" url="http://www.primefaces.org"/>
+	       		</p:submenu>
+      	</p:menu>
 	</h:form>
 </ui:composition>
