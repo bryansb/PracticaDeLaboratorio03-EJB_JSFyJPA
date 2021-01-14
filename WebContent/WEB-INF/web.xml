@@ -28,4 +28,10 @@
     <url-pattern>*.jsf</url-pattern>
     <url-pattern>*.xhtml</url-pattern>
   </servlet-mapping>
+  
+  <!-- ERROR PAGES -->
+  <error-page>
+   	<error-code>404</error-code>
+    	<location>/XHTML/public/error/error_404.xhtml</location>
+	</error-page>
 </web-app>
